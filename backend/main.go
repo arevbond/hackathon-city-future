@@ -15,13 +15,15 @@ func main() {
 		log.Fatal()
 	}
 
-	db, err := NewConn(cfg.Storage)
+	conn, err := NewConn(cfg.Storage)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	db := NewStorage(conn)
 	srv := NewServer(cfg.Server, db)
 
+	log.Println("cfg", cfg)
 	log.Println("server started")
 
 	if err = srv.ListenAndServe(); err != nil {

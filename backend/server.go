@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/jmoiron/sqlx"
 	"net"
 	"net/http"
 	"strconv"
@@ -9,10 +8,10 @@ import (
 
 type Server struct {
 	*http.Server
-	db *sqlx.DB
+	db *Storage
 }
 
-func NewServer(cfg CfgServer, db *sqlx.DB) *Server {
+func NewServer(cfg CfgServer, db *Storage) *Server {
 	addr := net.JoinHostPort(cfg.Host, strconv.Itoa(cfg.Port))
 	s := &Server{
 		Server: &http.Server{

@@ -10,6 +10,14 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+type Storage struct {
+	db *sqlx.DB
+}
+
+func NewStorage(db *sqlx.DB) *Storage {
+	return &Storage{db: db}
+}
+
 func NewConn(cfg CfgPostgres) (*sqlx.DB, error) {
 	hostWithPort := net.JoinHostPort(cfg.Host, strconv.Itoa(cfg.Port))
 	uri := fmt.Sprintf("postgresql://%s:%s@%s/%s", cfg.User, cfg.Password,
