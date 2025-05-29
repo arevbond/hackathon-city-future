@@ -6,7 +6,11 @@
 package main
 
 import (
+	"github.com/lmittmann/tint"
 	"log"
+	"log/slog"
+	"os"
+	"time"
 )
 
 func main() {
@@ -20,8 +24,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	db := NewStorage(conn)
-	srv := NewServer(cfg.Server, db)
+	logger := setupPrettyLogger()
+
+	db := NewStorage(conn, logger)
+	srv := NewServer(cfg.Server, db, logger)
 
 	log.Println("cfg", cfg)
 	log.Println("server started")
@@ -29,4 +35,16 @@ func main() {
 	if err = srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func setupPrettyLogger() *slog.Logger {
+	logger := slog.New(tint.NewHandler(os.Stdout, &tint.Options{
+		AddSource:   false,
+		Level:       slog.LevelDebug,
+		ReplaceAttr: nil,
+		TimeFormat:  time.Kitchen,
+		NoColor:     false,
+	}))
+
+	return logger
 }

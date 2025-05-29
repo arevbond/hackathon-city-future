@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 	"net"
 	"strconv"
 
@@ -11,10 +12,11 @@ import (
 )
 
 type Storage struct {
-	db *sqlx.DB
+	db  *sqlx.DB
+	log *slog.Logger
 }
 
-func NewStorage(db *sqlx.DB) *Storage {
+func NewStorage(db *sqlx.DB, log *slog.Logger) *Storage {
 	return &Storage{db: db}
 }
 

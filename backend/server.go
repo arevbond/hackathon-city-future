@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log/slog"
 	"net"
 	"net/http"
 	"strconv"
@@ -8,16 +9,18 @@ import (
 
 type Server struct {
 	*http.Server
-	db *Storage
+	db     *Storage
+	logger *slog.Logger
 }
 
-func NewServer(cfg CfgServer, db *Storage) *Server {
+func NewServer(cfg CfgServer, db *Storage, log *slog.Logger) *Server {
 	addr := net.JoinHostPort(cfg.Host, strconv.Itoa(cfg.Port))
 	s := &Server{
 		Server: &http.Server{
 			Addr: addr,
 		},
-		db: db,
+		db:     db,
+		logger: log,
 	}
 
 	s.Handler = s.routes()
