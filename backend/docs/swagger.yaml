@@ -1,0 +1,19 @@
+info:
+  contact: {}
+paths:
+  /api/ping:
+    get:
+      description: Возвращает "pong" при GET-запросе
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Проверка доступности API
+      tags:
+      - health
+swagger: "2.0"
