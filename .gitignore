@@ -1,0 +1,17 @@
+# idea files
+
+.idea
+
+# vs code files
+
+.vscode
+
+# configs
+backend/.env
+frontend/.env
+.env.debug
+.env
+
+config.active.yaml
+!.gitkeep
+
