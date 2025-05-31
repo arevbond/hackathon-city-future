@@ -23,19 +23,10 @@ export const AppHeader = () => {
 									}></NavElement>
 							)}
 						</NavLink>
-						<NavLink to={pathPages.product} className={styles['nav-link']}>
+						<NavLink to={pathPages.login} className={styles['nav-link']}>
 							{({ isActive }) => (
 								<NavElement
-									name='характеристики'
-									className={
-										isActive ? styles.active : styles.link
-									}></NavElement>
-							)}
-						</NavLink>
-						<NavLink to={pathPages.advantages} className={styles['nav-link']}>
-							{({ isActive }) => (
-								<NavElement
-									name='преимущества'
+									name='войти'
 									className={
 										isActive ? styles.active : styles.link
 									}></NavElement>
