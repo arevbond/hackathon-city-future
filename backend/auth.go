@@ -36,7 +36,6 @@ func (s *Server) GenerateJWT(userID int, role string) (string, error) {
 	return tokenString, nil
 }
 
-// ParseJWT парсит и валидирует JWT-токен.
 func (s *Server) ParseJWT(tokenString string) (int, UserRole, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Проверяем метод подписи

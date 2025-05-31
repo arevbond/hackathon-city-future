@@ -15,12 +15,12 @@ type HealthResponse struct {
 
 // RequestListResponse возвращается эндпоинтом /requests
 type RequestListResponse struct {
-	Requests []Request `json:"requests"`
+	Requests []*Request `json:"requests"`
 }
 
 // RequestResponse возвращается эндпоинтом /request/{id}
 type RequestResponse struct {
-	Request Request `json:"request"`
+	Request *Request `json:"request"`
 }
 
 // CreateRequestResponse возвращается после создания запроса
@@ -38,7 +38,7 @@ type LoginRequest struct {
 // LoginResponse описывает структуру ответа после успешной авторизации
 type LoginResponse struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	User  User   `json:"user"`
+	User  *User  `json:"user"`
 }
 
 // AssignTechRequest представляет запрос на назначение технического специалиста
