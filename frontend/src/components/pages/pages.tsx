@@ -5,6 +5,7 @@ import { pathPages } from '@utils/page-paths';
 import { Page404 } from './error404-page/erro404-page';
 
 import { Home } from './home/home';
+import {Login} from "./login/login";
 
 export const Pages = () => {
 	const location = useLocation();
@@ -15,7 +16,7 @@ export const Pages = () => {
 			<Routes location={state?.backgroundLocation || location}>
 				{/* домашняя страницы */}
 				<Route path={pathPages.home} element={<Home />} />
-
+				<Route path={pathPages.login} element={<Login />} />
 				<Route path='*' element={<Page404 />} />
 			</Routes>
 		</>

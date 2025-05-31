@@ -64,7 +64,7 @@
 // 							name='password'
 // 							type={isVisiblePassword ? 'text' : 'password'}
 // 							placeholder={form.password ? '' : 'Пароль'}
-// 							{...(isVisiblePassword
+// 							{...(isVisiblePassword<Route path={pathPages.home} element={<Home />} />
 // 								? { icon: 'HideIcon' }
 // 								: { icon: 'ShowIcon' })}
 // 							onChange={onChange}
