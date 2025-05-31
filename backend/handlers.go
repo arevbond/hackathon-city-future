@@ -24,7 +24,7 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /request", s.createRequest)
 	mux.HandleFunc("GET /requests", s.allRequests)
 	mux.HandleFunc("GET /request/{id}", s.requestByID)
-	mux.HandleFunc("GET /requests/{id}/assign-tech", s.assignTechToRequest)
+	mux.HandleFunc("PUT /requests/{id}/assign-tech", s.assignTechToRequest)
 
 	// tech-reports
 	mux.HandleFunc("POST /tech-report", s.createTechReport)
@@ -37,7 +37,7 @@ func (s *Server) routes() *http.ServeMux {
 // @Tags         health
 // @Produce      json
 // @Success      200  {object}  PongResponse
-// @Router       /api/ping [get]
+// @Router       /ping [get]
 func (s *Server) handlePing(w http.ResponseWriter, r *http.Request) {
 	resp := map[string]string{"message": "pong"}
 	w.Header().Set("Content-Type", "application/json")
@@ -50,7 +50,7 @@ func (s *Server) handlePing(w http.ResponseWriter, r *http.Request) {
 // @Tags         health
 // @Produce      json
 // @Success      200  {object}  HealthResponse
-// @Router       /api/health [get]
+// @Router       /health [get]
 func (s *Server) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	env := envelope{
 		"status": "available",
@@ -72,7 +72,7 @@ func (s *Server) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 // @Success      201      {object}  CreateRequestResponse
 // @Failure      400      {object}  map[string]string
 // @Failure      500      {object}  map[string]string
-// @Router       /api/request [post]
+// @Router       /request [post]
 func (s *Server) createRequest(w http.ResponseWriter, r *http.Request) {
 	var input CreateRequest
 
@@ -100,7 +100,7 @@ func (s *Server) createRequest(w http.ResponseWriter, r *http.Request) {
 // @Param        status  query     string  false  "Статус запроса"
 // @Success      200     {object}  RequestListResponse
 // @Failure      500     {object}  map[string]string
-// @Router       /api/requests [get]
+// @Router       /requests [get]
 func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 	status := r.URL.Query().Get("status")
 
@@ -124,7 +124,7 @@ func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  RequestResponse
 // @Failure      400  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
-// @Router       /api/request/{id} [get]
+// @Router       /request/{id} [get]
 func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 
@@ -198,6 +198,18 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// assignTechToRequest godoc
+// @Summary      Назначение технического специалиста на запрос
+// @Description  Назначает технического специалиста для работы с конкретным запросом
+// @Tags         requests
+// @Accept       json
+// @Produce      json
+// @Param        id      path      int                    true  "ID запроса"
+// @Param        tech    body      AssignTechRequest      true  "ID технического специалиста"
+// @Success      200     {object}  SuccessResponse
+// @Failure      400     {object}  map[string]string
+// @Failure      500     {object}  map[string]string
+// @Router       /requests/{id}/assign-tech [put]
 func (s *Server) assignTechToRequest(w http.ResponseWriter, r *http.Request) {
 	requestIDStr := r.PathValue("id")
 	requestID, err := strconv.Atoi(requestIDStr)
@@ -232,11 +244,22 @@ func (s *Server) assignTechToRequest(w http.ResponseWriter, r *http.Request) {
 }
 
 type CreateTechReportRequest struct {
-	RequestID  int    `json:"request_id"`
-	TechUserID int    `json:"tech_user_id"`
-	Report     string `json:"report"`
+	RequestID  int    `json:"request_id" example:"123"`
+	TechUserID int    `json:"tech_user_id" example:"456"`
+	Report     string `json:"report" example:"Работы выполнены в полном объеме"`
 }
 
+// createTechReport godoc
+// @Summary      Создание технического отчета
+// @Description  Создает новый технический отчет для выполненного запроса
+// @Tags         tech-reports
+// @Accept       json
+// @Produce      json
+// @Param        report  body      CreateTechReportRequest  true  "Данные технического отчета"
+// @Success      201     {object}  CreateTechReportResponse
+// @Failure      400     {object}  map[string]string
+// @Failure      500     {object}  map[string]string
+// @Router       /tech-report [post]
 func (s *Server) createTechReport(w http.ResponseWriter, r *http.Request) {
 	var request CreateTechReportRequest
 

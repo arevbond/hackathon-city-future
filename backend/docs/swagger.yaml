@@ -1,5 +1,11 @@
 basePath: /
 definitions:
+  main.AssignTechRequest:
+    properties:
+      tech_user_id:
+        example: 123
+        type: integer
+    type: object
   main.CreateRequest:
     properties:
       client_email:
@@ -17,6 +23,24 @@ definitions:
         type: integer
       status:
         type: string
+    type: object
+  main.CreateTechReportRequest:
+    properties:
+      report:
+        example: Работы выполнены в полном объеме
+        type: string
+      request_id:
+        example: 123
+        type: integer
+      tech_user_id:
+        example: 456
+        type: integer
+    type: object
+  main.CreateTechReportResponse:
+    properties:
+      id:
+        example: 456
+        type: integer
     type: object
   main.HealthResponse:
     properties:
@@ -84,6 +108,12 @@ definitions:
     type: string
     x-enum-varnames:
     - RequestWithoutStatus
+  main.SuccessResponse:
+    properties:
+      success:
+        example: "true"
+        type: string
+    type: object
   main.User:
     properties:
       email:
@@ -229,6 +259,79 @@ paths:
       summary: Получение списка запросов
       tags:
       - requests
+  /api/requests/{id}/assign-tech:
+    put:
+      consumes:
+      - application/json
+      description: Назначает технического специалиста для работы с конкретным запросом
+      parameters:
+      - description: ID запроса
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ID технического специалиста
+        in: body
+        name: tech
+        required: true
+        schema:
+          $ref: '#/definitions/main.AssignTechRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Назначение технического специалиста на запрос
+      tags:
+      - requests
+  /api/tech-report:
+    post:
+      consumes:
+      - application/json
+      description: Создает новый технический отчет для выполненного запроса
+      parameters:
+      - description: Данные технического отчета
+        in: body
+        name: report
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateTechReportRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.CreateTechReportResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание технического отчета
+      tags:
+      - tech-reports
   /login:
     post:
       consumes:

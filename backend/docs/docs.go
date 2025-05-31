@@ -191,6 +191,117 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/requests/{id}/assign-tech": {
+            "put": {
+                "description": "Назначает технического специалиста для работы с конкретным запросом",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "requests"
+                ],
+                "summary": "Назначение технического специалиста на запрос",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "ID запроса",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "ID технического специалиста",
+                        "name": "tech",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.AssignTechRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tech-report": {
+            "post": {
+                "description": "Создает новый технический отчет для выполненного запроса",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tech-reports"
+                ],
+                "summary": "Создание технического отчета",
+                "parameters": [
+                    {
+                        "description": "Данные технического отчета",
+                        "name": "report",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.CreateTechReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/main.CreateTechReportResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Проверяет email и пароль пользователя, возвращает JWT и данные пользователя",
@@ -254,6 +365,15 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "main.AssignTechRequest": {
+            "type": "object",
+            "properties": {
+                "tech_user_id": {
+                    "type": "integer",
+                    "example": 123
+                }
+            }
+        },
         "main.CreateRequest": {
             "type": "object",
             "properties": {
@@ -279,6 +399,32 @@ const docTemplate = `{
                 },
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "main.CreateTechReportRequest": {
+            "type": "object",
+            "properties": {
+                "report": {
+                    "type": "string",
+                    "example": "Работы выполнены в полном объеме"
+                },
+                "request_id": {
+                    "type": "integer",
+                    "example": 123
+                },
+                "tech_user_id": {
+                    "type": "integer",
+                    "example": 456
+                }
+            }
+        },
+        "main.CreateTechReportResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 456
                 }
             }
         },
@@ -382,6 +528,15 @@ const docTemplate = `{
             "x-enum-varnames": [
                 "RequestWithoutStatus"
             ]
+        },
+        "main.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "string",
+                    "example": "true"
+                }
+            }
         },
         "main.User": {
             "type": "object",

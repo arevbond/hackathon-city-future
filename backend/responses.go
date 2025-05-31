@@ -40,3 +40,18 @@ type LoginResponse struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
 	User  User   `json:"user"`
 }
+
+// AssignTechRequest представляет запрос на назначение технического специалиста
+type AssignTechRequest struct {
+	TechUserID int `json:"tech_user_id" example:"123"`
+}
+
+// SuccessResponse представляет успешный ответ
+type SuccessResponse struct {
+	Success string `json:"success" example:"true"`
+}
+
+// CreateTechReportResponse представляет ответ при создании технического отчета
+type CreateTechReportResponse struct {
+	ID int `json:"id" example:"456"`
+}
