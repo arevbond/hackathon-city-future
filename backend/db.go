@@ -86,7 +86,7 @@ func (s *Storage) Requests(ctx context.Context, status RequestStatus) ([]*Reques
 }
 
 func (s *Storage) Request(ctx context.Context, id int) (*Request, error) {
-	query := `SELECT id, client_name, client_email, title, description, status, created_at, updated_at
+	query := `SELECT id, client_name, client_email, tech_user_id, title, description, status, created_at, updated_at
 			FROM requests
 			WHERE id = $1;`
 
@@ -154,4 +154,26 @@ func (s *Storage) CreateTechReport(ctx context.Context, createReport CreateTechR
 	}
 
 	return reportID, nil
+}
+
+func (s *Storage) UpdateStatusRequest(ctx context.Context, id int, status string) error {
+	query := `UPDATE requests
+				SET status = $1
+				WHERE id = $2;`
+
+	result, err := s.db.ExecContext(ctx, query, status, id)
+	if err != nil {
+		return fmt.Errorf("can't assign tech to request: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("can't get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("request with id %d not found", id)
+	}
+
+	return nil
 }

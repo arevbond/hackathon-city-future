@@ -25,9 +25,11 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("GET /requests", s.allRequests)
 	mux.HandleFunc("GET /request/{id}", s.requestByID)
 	mux.HandleFunc("PUT /requests/{id}/assign-tech", s.assignTechToRequest)
+	mux.HandleFunc("PATCH /requests/{id}/status", s.updateStatusRequest)
 
 	// tech-reports
 	mux.HandleFunc("POST /tech-report", s.createTechReport)
+
 	return mux
 }
 
@@ -277,6 +279,41 @@ func (s *Server) createTechReport(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = s.writeJSON(w, http.StatusCreated, envelope{"id": reportID}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+type UpdateStatusRequest struct {
+	Status     string `json:"status"`
+	PublicNote string `json:"public_note"`
+}
+
+func (s *Server) updateStatusRequest(w http.ResponseWriter, r *http.Request) {
+	var req UpdateStatusRequest
+
+	if err := s.readJSON(w, r, &req); err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	idStr := r.PathValue("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.db.UpdateStatusRequest(r.Context(), id, req.Status); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
