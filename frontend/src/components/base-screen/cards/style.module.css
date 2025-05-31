@@ -1,0 +1,62 @@
+.container {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	overflow: hidden;
+}
+
+.title {
+	position: absolute;
+	left: 122.18px;
+	top: 109.49px;
+	font-family: 'Jost', 'EpilepsySans', 'Inter', 'Avenir', 'Helvetica', 'Arial', sans-serif;
+	font-size: 48px;
+	font-weight: bold;
+	line-height: 1.2;
+	color: #000;
+	margin: 0;
+	z-index: 10;
+}
+
+.zalupa {
+	font-family: 'EpilepsySans', 'Jost', 'Inter', 'Avenir', 'Helvetica', 'Arial', sans-serif;
+}
+
+.arrow {
+	position: absolute;
+	left: 971.91px;
+	top: -20.81px;
+	width: 384.22px;
+	height: 384.22px;
+	z-index: 5;
+}
+
+.card1 {
+	position: absolute;
+	left: 120px;
+	top: 296.98px;
+	width: 374px;
+	height: 363px;
+	transform: rotate(5deg);
+	z-index: 1;
+}
+
+.card2 {
+	position: absolute;
+	left: 533px;
+	top: 264.02px;
+	width: 374px;
+	height: 363px;
+	transform: rotate(-6deg);
+	z-index: 2;
+}
+
+.card3 {
+	position: absolute;
+	left: 875.79px;
+	top: 296.68px;
+	width: 374px;
+	height: 363px;
+	transform: rotate(5deg);
+	z-index: 1;
+}
