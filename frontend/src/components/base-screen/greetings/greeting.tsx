@@ -1,6 +1,7 @@
 import { Arrow } from '../assets/arrow';
-import robot from '../assets/robot.jpg';
+import robot from '../assets/robot.png';
 import styles from './styles.module.css';
+import { GreetingContent } from './greeting-content/greeting-content';
 
 export const Greeting = () => {
 	return (
@@ -10,6 +11,7 @@ export const Greeting = () => {
 			</div>
 			<div className={styles.arrow}>
 				<Arrow />
+				<GreetingContent />
 			</div>
 		</section>
 	);

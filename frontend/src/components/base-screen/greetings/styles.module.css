@@ -11,9 +11,9 @@
 }
 
 .arrow {
-	width: 50%;
+	/*width: 50%;*/
 	margin-top: 40px;
-	transform: translateX(-10%);
+	/*transform: translateX(0%);*/
 }
 
 @media (width <= 1240px) {
