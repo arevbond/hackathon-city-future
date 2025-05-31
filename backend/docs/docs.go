@@ -344,6 +344,9 @@ const docTemplate = `{
                 "status": {
                     "$ref": "#/definitions/main.RequestStatus"
                 },
+                "tech_user_id": {
+                    "type": "integer"
+                },
                 "title": {
                     "type": "string"
                 },

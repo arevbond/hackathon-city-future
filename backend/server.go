@@ -25,7 +25,7 @@ func NewServer(cfg CfgServer, db *Storage, log *slog.Logger) *Server {
 		jwtSecret: cfg.JwtSecret,
 	}
 
-	s.Srv.Handler = s.routes()
+	s.Srv.Handler = corsMiddleware(s.routes())
 
 	return s
 }
