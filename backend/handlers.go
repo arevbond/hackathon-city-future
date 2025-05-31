@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
+	"errors"
 	_ "github.com/arevbond/hackathon-city-future/backend/docs"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
@@ -14,6 +16,9 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("GET /ping", s.handlePing)
 	mux.HandleFunc("GET /health", s.healthcheckHandler)
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
+
+	// auth
+	mux.HandleFunc("POST /login", s.login)
 
 	// requests
 	mux.HandleFunc("POST /request", s.createRequest)
@@ -98,4 +103,47 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(idStr)
 	request, _ := s.db.Request(r.Context(), id)
 	_ = s.writeJSON(w, http.StatusOK, envelope{"request": request}, nil)
+}
+
+// login godoc
+// @Summary      Авторизация пользователя
+// @Description  Проверяет email и пароль пользователя, возвращает JWT и данные пользователя
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        credentials  body      LoginRequest  true  "Данные для входа"
+// @Success      200          {object}  LoginResponse
+// @Failure      400          {object}  map[string]string
+// @Failure      401          {object}  map[string]string
+// @Failure      500          {object}  map[string]string
+// @Router       /login [post]
+func (s *Server) login(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	if err := s.readJSON(w, r, &input); err != nil {
+		s.badRequestResponse(w, r, err)
+	}
+
+	user, err := s.db.User(r.Context(), input.Email)
+	if errors.Is(err, sql.ErrNoRows) {
+		s.unauthorizedResponse(w, r)
+	} else if err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
+
+	if !CheckPasswordHash(input.Password, user.HashPassword) {
+		s.unauthorizedResponse(w, r)
+	}
+
+	token, err := s.GenerateJWT(user.ID, string(user.Role))
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
 }

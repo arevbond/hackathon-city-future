@@ -23,6 +23,23 @@ definitions:
       status:
         type: string
     type: object
+  main.LoginRequest:
+    properties:
+      email:
+        example: test@example.com
+        type: string
+      password:
+        example: password123
+        type: string
+    type: object
+  main.LoginResponse:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+      user:
+        $ref: '#/definitions/main.User'
+    type: object
   main.PongResponse:
     properties:
       message:
@@ -65,6 +82,29 @@ definitions:
     type: string
     x-enum-varnames:
     - RequestWithoutStatus
+  main.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      role:
+        $ref: '#/definitions/main.UserRole'
+    type: object
+  main.UserRole:
+    enum:
+    - ""
+    - manager
+    - tech
+    - client
+    type: string
+    x-enum-varnames:
+    - UserWithoutRole
+    - UserManager
+    - UserTech
+    - UserClient
 host: localhost:8080
 info:
   contact: {}
@@ -187,4 +227,45 @@ paths:
       summary: Получение списка запросов
       tags:
       - requests
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Проверяет email и пароль пользователя, возвращает JWT и данные
+        пользователя
+      parameters:
+      - description: Данные для входа
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/main.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Авторизация пользователя
+      tags:
+      - auth
 swagger: "2.0"

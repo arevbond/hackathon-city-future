@@ -15,8 +15,9 @@ type Config struct {
 }
 
 type CfgServer struct {
-	Host string
-	Port int
+	Host      string
+	Port      int
+	JwtSecret string
 }
 
 type CfgPostgres struct {
@@ -39,8 +40,9 @@ func NewConfig() (Config, error) {
 	}
 
 	server := CfgServer{
-		Host: getEnv("SERVER_HOST", "0.0.0.0"),
-		Port: srvPort,
+		Host:      getEnv("SERVER_HOST", "0.0.0.0"),
+		Port:      srvPort,
+		JwtSecret: mustGetEnv("JWT_SECRET"),
 	}
 
 	storagePortStr := getEnv("PG_PORT", "5432")

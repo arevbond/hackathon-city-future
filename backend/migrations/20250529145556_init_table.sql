@@ -5,8 +5,9 @@
 CREATE TABLE users (
        id SERIAL PRIMARY KEY,
        name TEXT NOT NULL,
-       role TEXT NOT NULL, -- 'manager' или 'tech'
-       email TEXT UNIQUE NOT NULL
+       role TEXT NOT NULL, -- 'manager' 'tech' 'client'
+       email TEXT UNIQUE NOT NULL,
+       hash_password TEXT NOT NULL
 );
 
 -- Таблица заявок

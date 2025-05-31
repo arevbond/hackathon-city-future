@@ -98,3 +98,17 @@ func (s *Storage) Request(ctx context.Context, id int) (*Request, error) {
 
 	return &request, nil
 }
+
+func (s *Storage) User(ctx context.Context, email string) (*User, error) {
+	query := `SELECT id, name, role, email, hash_password
+				FROM users
+				WHERE email = $1;`
+
+	var user User
+
+	if err := s.db.GetContext(ctx, &user, query, email); err != nil {
+		return nil, fmt.Errorf("can't get user from db: %w", err)
+	}
+
+	return &user, nil
+}

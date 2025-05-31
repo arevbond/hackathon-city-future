@@ -41,3 +41,20 @@ type CreateRequest struct {
 	Title       string `db:"title" json:"title"`
 	Description string `db:"description" json:"description"`
 }
+
+type UserRole string
+
+const (
+	UserWithoutRole UserRole = ""
+	UserManager     UserRole = "manager"
+	UserTech        UserRole = "tech"
+	UserClient      UserRole = "client"
+)
+
+type User struct {
+	ID           int      `db:"id" json:"id"`
+	Name         string   `db:"name" json:"name"`
+	Role         UserRole `db:"role" json:"role"`
+	Email        string   `db:"email" json:"email"`
+	HashPassword string   `db:"hash_password" json:"-"`
+}

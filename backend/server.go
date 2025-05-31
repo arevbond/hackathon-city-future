@@ -8,9 +8,10 @@ import (
 )
 
 type Server struct {
-	Srv    *http.Server
-	db     *Storage
-	logger *slog.Logger
+	Srv       *http.Server
+	db        *Storage
+	logger    *slog.Logger
+	jwtSecret string
 }
 
 func NewServer(cfg CfgServer, db *Storage, log *slog.Logger) *Server {
@@ -19,8 +20,9 @@ func NewServer(cfg CfgServer, db *Storage, log *slog.Logger) *Server {
 		Srv: &http.Server{
 			Addr: addr,
 		},
-		db:     db,
-		logger: log,
+		db:        db,
+		logger:    log,
+		jwtSecret: cfg.JwtSecret,
 	}
 
 	s.Srv.Handler = s.routes()

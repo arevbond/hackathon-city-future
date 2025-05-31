@@ -102,3 +102,12 @@ func (s *Server) serverErrorResponse(w http.ResponseWriter, r *http.Request, err
 	message := "the server encountered a problem and could not process your request"
 	s.errorResponse(w, r, http.StatusInternalServerError, message)
 }
+
+func (s *Server) unauthorizedResponse(w http.ResponseWriter, r *http.Request) {
+	message := "invalid authentication credentials"
+	s.errorResponse(w, r, http.StatusUnauthorized, message)
+}
+
+func (s *Server) forbiddenResponse(w http.ResponseWriter, r *http.Request) {
+	s.errorResponse(w, r, http.StatusForbidden, "you do not have permission to access this resource")
+}

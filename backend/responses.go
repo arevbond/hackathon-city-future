@@ -28,3 +28,15 @@ type CreateRequestResponse struct {
 	ID     int    `json:"id"`
 	Status string `json:"status"`
 }
+
+// LoginRequest описывает структуру запроса на авторизацию
+type LoginRequest struct {
+	Email    string `json:"email" example:"test@example.com"`
+	Password string `json:"password" example:"password123"`
+}
+
+// LoginResponse описывает структуру ответа после успешной авторизации
+type LoginResponse struct {
+	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+	User  User   `json:"user"`
+}
