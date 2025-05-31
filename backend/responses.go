@@ -55,3 +55,8 @@ type SuccessResponse struct {
 type CreateTechReportResponse struct {
 	ID int `json:"id" example:"456"`
 }
+
+// CreateCommentResponse представляет ответ при создании комментария
+type CreateCommentResponse struct {
+	ID int `json:"id" example:"789"`
+}

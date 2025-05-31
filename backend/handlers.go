@@ -21,7 +21,7 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /login", s.login)
 
 	// requests
-	mux.HandleFunc("POST /request", s.createRequest)
+	mux.HandleFunc("POST /requests", s.createRequest)
 	mux.HandleFunc("GET /requests", s.allRequests)
 	mux.HandleFunc("GET /request/{id}", s.requestByID)
 	mux.HandleFunc("PUT /requests/{id}/assign-tech", s.assignTechToRequest)
@@ -29,6 +29,8 @@ func (s *Server) routes() *http.ServeMux {
 
 	// tech-reports
 	mux.HandleFunc("POST /tech-report", s.createTechReport)
+	mux.HandleFunc("POST /comments", s.createComment)
+	//mux.HandleFunc("GET /tech-report", s.getTechReportWithComment)
 
 	return mux
 }
@@ -325,9 +327,51 @@ func (s *Server) updateStatusRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusOK, SuccessResponse{Success: "true"}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
 	}
 }
+
+type CreateCommentRequest struct {
+	ReportID int    `json:"report_id"`
+	UserID   int    `json:"user_id"`
+	Content  string `json:"content"`
+}
+
+// createComment godoc
+// @Summary      Создание комментария
+// @Description  Создает новый комментарий к техническому отчету
+// @Tags         comments
+// @Accept       json
+// @Produce      json
+// @Param        comment  body      CreateCommentRequest   true  "Данные комментария"
+// @Success      201      {object}  CreateCommentResponse
+// @Failure      400      {object}  map[string]string
+// @Failure      500      {object}  map[string]string
+// @Router       /comments [post]
+func (s *Server) createComment(w http.ResponseWriter, r *http.Request) {
+	var request CreateCommentRequest
+
+	if err := s.readJSON(w, r, &request); err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	id, err := s.db.CreateComment(r.Context(), request.ReportID, request.UserID, request.Content)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusCreated, CreateCommentResponse{ID: id}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+//func (s *Server)

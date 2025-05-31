@@ -6,6 +6,21 @@ definitions:
         example: 123
         type: integer
     type: object
+  main.CreateCommentRequest:
+    properties:
+      content:
+        type: string
+      report_id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
+  main.CreateCommentResponse:
+    properties:
+      id:
+        example: 789
+        type: integer
+    type: object
   main.CreateRequest:
     properties:
       client_email:
@@ -114,6 +129,13 @@ definitions:
         example: "true"
         type: string
     type: object
+  main.UpdateStatusRequest:
+    properties:
+      public_note:
+        type: string
+      status:
+        type: string
+    type: object
   main.User:
     properties:
       email:
@@ -144,7 +166,41 @@ info:
   title: My Hackathon API
   version: "1.0"
 paths:
-  /api/health:
+  /comments:
+    post:
+      consumes:
+      - application/json
+      description: Создает новый комментарий к техническому отчету
+      parameters:
+      - description: Данные комментария
+        in: body
+        name: comment
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateCommentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.CreateCommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание комментария
+      tags:
+      - comments
+  /health:
     get:
       description: Проверяет, доступен ли сервер
       produces:
@@ -157,181 +213,6 @@ paths:
       summary: Проверка состояния сервера
       tags:
       - health
-  /api/ping:
-    get:
-      description: Возвращает "pong" при GET-запросе
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.PongResponse'
-      summary: Проверка доступности API
-      tags:
-      - health
-  /api/request:
-    post:
-      consumes:
-      - application/json
-      description: Создаёт новый запрос в системе
-      parameters:
-      - description: Данные нового запроса
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/main.CreateRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/main.CreateRequestResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Создание запроса
-      tags:
-      - requests
-  /api/request/{id}:
-    get:
-      description: Возвращает запрос по его идентификатору
-      parameters:
-      - description: ID запроса
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.RequestResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Получение запроса по ID
-      tags:
-      - requests
-  /api/requests:
-    get:
-      description: Возвращает все запросы с фильтром по статусу (опционально)
-      parameters:
-      - description: Статус запроса
-        in: query
-        name: status
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.RequestListResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Получение списка запросов
-      tags:
-      - requests
-  /api/requests/{id}/assign-tech:
-    put:
-      consumes:
-      - application/json
-      description: Назначает технического специалиста для работы с конкретным запросом
-      parameters:
-      - description: ID запроса
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: ID технического специалиста
-        in: body
-        name: tech
-        required: true
-        schema:
-          $ref: '#/definitions/main.AssignTechRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.SuccessResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Назначение технического специалиста на запрос
-      tags:
-      - requests
-  /api/tech-report:
-    post:
-      consumes:
-      - application/json
-      description: Создает новый технический отчет для выполненного запроса
-      parameters:
-      - description: Данные технического отчета
-        in: body
-        name: report
-        required: true
-        schema:
-          $ref: '#/definitions/main.CreateTechReportRequest'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/main.CreateTechReportResponse'
-        "400":
-          description: Bad Request
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "500":
-          description: Internal Server Error
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-      summary: Создание технического отчета
-      tags:
-      - tech-reports
   /login:
     post:
       consumes:
@@ -373,4 +254,218 @@ paths:
       summary: Авторизация пользователя
       tags:
       - auth
+  /ping:
+    get:
+      description: Возвращает "pong" при GET-запросе
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.PongResponse'
+      summary: Проверка доступности API
+      tags:
+      - health
+  /request:
+    post:
+      consumes:
+      - application/json
+      description: Создаёт новый запрос в системе
+      parameters:
+      - description: Данные нового запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.CreateRequestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание запроса
+      tags:
+      - requests
+  /request/{id}:
+    get:
+      description: Возвращает запрос по его идентификатору
+      parameters:
+      - description: ID запроса
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.RequestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получение запроса по ID
+      tags:
+      - requests
+  /requests:
+    get:
+      description: Возвращает все запросы с фильтром по статусу (опционально)
+      parameters:
+      - description: Статус запроса
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.RequestListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получение списка запросов
+      tags:
+      - requests
+  /requests/{id}/assign-tech:
+    put:
+      consumes:
+      - application/json
+      description: Назначает технического специалиста для работы с конкретным запросом
+      parameters:
+      - description: ID запроса
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ID технического специалиста
+        in: body
+        name: tech
+        required: true
+        schema:
+          $ref: '#/definitions/main.AssignTechRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Назначение технического специалиста на запрос
+      tags:
+      - requests
+  /requests/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Изменяет статус конкретного запроса по его ID
+      parameters:
+      - description: ID запроса
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Новый статус запроса
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/main.UpdateStatusRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Обновление статуса запроса
+      tags:
+      - requests
+  /tech-report:
+    post:
+      consumes:
+      - application/json
+      description: Создает новый технический отчет для выполненного запроса
+      parameters:
+      - description: Данные технического отчета
+        in: body
+        name: report
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateTechReportRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.CreateTechReportResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание технического отчета
+      tags:
+      - tech-reports
 swagger: "2.0"

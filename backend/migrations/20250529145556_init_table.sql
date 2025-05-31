@@ -35,7 +35,7 @@ CREATE TABLE tech_reports (
 -- Таблица комментариев (для диалога)
 CREATE TABLE comments (
       id SERIAL PRIMARY KEY,
-      request_id INTEGER REFERENCES requests(id) ON DELETE CASCADE,
+      tech_report_id INTEGER REFERENCES tech_reports(id) ON DELETE CASCADE,
       user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
       content TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT NOW()

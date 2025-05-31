@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (s *Server) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
+func (s *Server) writeJSON(w http.ResponseWriter, status int, data any, headers http.Header) error {
 	js, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
 		return err

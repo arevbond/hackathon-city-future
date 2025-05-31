@@ -177,3 +177,24 @@ func (s *Storage) UpdateStatusRequest(ctx context.Context, id int, status string
 
 	return nil
 }
+
+func (s *Storage) CreateComment(ctx context.Context, reportID int, userID int, content string) (int, error) {
+	query := `INSERT INTO comments (tech_report_id, user_id, content)
+				VALUES ($1, $2, $3)
+				RETURNING id;`
+
+	args := []any{reportID, userID, content}
+
+	var commentID int
+
+	row := s.db.QueryRowContext(ctx, query, args...)
+	if err := row.Scan(&commentID); err != nil {
+		return -1, fmt.Errorf("can't create new comment: %w", err)
+	}
+
+	if err := row.Err(); err != nil {
+		return -1, fmt.Errorf("err while processing output from tech report: %w", err)
+	}
+
+	return commentID, nil
+}
