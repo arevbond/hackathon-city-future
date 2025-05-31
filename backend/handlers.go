@@ -91,7 +91,7 @@ func (s *Server) createRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusCreated, CreateRequestResponse{ID: id, Status: "new"}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusCreated, envelope{"id": id, "status": "new"}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 	}
 }
@@ -114,7 +114,7 @@ func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, RequestListResponse{Requests: requests}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusOK, envelope{"requests": requests}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 	}
 }
@@ -144,7 +144,7 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, RequestResponse{Request: request}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusOK, envelope{"request": request}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 	}
 }
@@ -195,7 +195,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, LoginResponse{Token: token, User: user}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
@@ -240,7 +240,7 @@ func (s *Server) assignTechToRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, SuccessResponse{Success: "true"}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
@@ -280,7 +280,7 @@ func (s *Server) createTechReport(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusCreated, CreateTechReportResponse{ID: reportID}, nil); err != nil {
+	if err = s.writeJSON(w, http.StatusCreated, envelope{"id": reportID}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
