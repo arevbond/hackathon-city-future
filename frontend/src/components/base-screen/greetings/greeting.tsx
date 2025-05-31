@@ -6,15 +6,17 @@ import { GreetingForm } from '../greeting-form/greeting-form';
 
 export const Greeting = () => {
 	return (
-		<section className={styles.greeting}>
-			<div className={styles.robot}>
-				<img src={robot} alt='robo' />
-			</div>
-			<div className={styles.arrow}>
-				<Arrow />
-				<GreetingContent />
-			</div>
-			<GreetingForm />
-		</section>
+		<>
+			<section className={styles.greeting}>
+				<div className={styles.robot}>
+					<img src={robot} alt='robo' />
+				</div>
+				<div className={styles.arrow}>
+					<Arrow />
+					<GreetingContent />
+				</div>
+				<GreetingForm />
+			</section>
+		</>
 	);
 };

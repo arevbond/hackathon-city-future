@@ -5,44 +5,49 @@
 	justify-content: center;
 	align-items: center;
 	gap: 25px;
+	width: 100%;
 	padding: 80px;
 	background-image: url('./assets/background.jpg');
 	background-position: center;
-	background-repeat: no-repeat;
-	border-radius: 24px; /* как на скрине */
-	width: 100%;
+	border: 1px solid transparent;
+
+	/* background-repeat: no-repeat; */ /* как на скрине */
+	border-radius: 25px;
 }
 
 .lamp {
 	position: absolute;
-	bottom: 0;
 	right: 0;
-	width: 180px;
-	z-index: 0;
+	bottom: 0;
+	z-index: 2;
+	width: 500px;
 }
 
 /* Джойстик (или загружающая картинка) */
+
 .joystick {
 	position: absolute;
 	bottom: 0;
+	bottom: 10%;
 	left: 0;
-	width: 180px;
 	z-index: 0;
+	width: 300px;
 }
 
 .title {
 	margin: 0;
-	font-size: 50px;
-	text-transform: uppercase;
-	text-align: center;
 	color: white;
+	font-size: 50px;
+	text-align: center;
+	text-transform: uppercase;
 
 }
 
 .description {
-	font-size: 30px;
-	color: white;
 	max-width: 770px;
+	color: white;
+	font-size: 30px;
+	font-family: "Jost";
 	text-align: center;
 }
 
