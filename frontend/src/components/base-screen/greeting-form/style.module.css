@@ -1,0 +1,6 @@
+.greetform {
+	display: flex;
+	flex-direction: column;
+	padding: 80px;
+	/*background-image: url("../assets/bac");*/
+}

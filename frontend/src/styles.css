@@ -78,7 +78,7 @@ button {
 	font-weight: 500;
 	font-size: 1em;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	/*background-color: #1a1a1a;*/
 	border: 1px solid transparent;
 	border-radius: 8px;
 	cursor: pointer;
