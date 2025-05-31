@@ -1,0 +1,29 @@
+.greeting {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.greeting img {
+	/* width: 100%; */
+	max-width: 600px;
+	height: auto;
+}
+
+.arrow {
+	width: 50%;
+	margin-top: 40px;
+	transform: translateX(-10%);
+}
+
+@media (width <= 1240px) {
+	.arrow {
+		transform: rotate(90deg);
+		/*width: 300px;*/
+	}
+
+	/*.greeting {*/
+	/*	flex-direction: column;*/
+	/*	padding: 1rem;*/
+	/*}*/
+}

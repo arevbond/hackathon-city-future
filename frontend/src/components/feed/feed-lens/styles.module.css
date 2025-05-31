@@ -1,7 +1,0 @@
-.lens {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  overflow-y: scroll;
-  height: 85%;
-}

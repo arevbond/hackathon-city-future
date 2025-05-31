@@ -2,6 +2,6 @@
 	display: flex;
 	flex-direction: column;
 	gap: 24px;
-  overflow-y: scroll;
-  height: calc(100% - 150px);
+	overflow-y: scroll;
+	height: calc(100% - 150px);
 }

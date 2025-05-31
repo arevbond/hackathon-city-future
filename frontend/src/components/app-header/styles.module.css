@@ -1,32 +1,13 @@
 .header {
 	/* border: 1px solid red; */
-	background-color: #1c1c21;
+	/* background-color: #1c1c21; */
+	color: #1a1a1a;
 }
 
 .nav-link {
-	color: white;
+	/*color: white;*/
 	background-color: inherit;
 }
-
-.nav-link:hover {
-	/* color: rgb(0, 255, 238); */
-}
-
-/* от старой версии */
-
-/* .container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-} */
-
-/* .nav {
-	display: flex;
-	gap: 10px;
-	align-items: center;
-} */
-
-/* другая версия */
 
 .nav {
 	display: flex;
@@ -35,8 +16,19 @@
 	gap: 20px;
 }
 
-.burger-ui {
+.links {
 	display: flex;
+	justify-content: space-around;
 	align-items: center;
-	gap: 10px;
+	gap: 20px;
 }
+
+.link {
+	color: #6f7277;
+}
+
+.active {
+	color: black;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
