@@ -10,4 +10,5 @@ export const pathPages = {
 	forgotPassword: '/forgot-password',
 	resetPassword: '/reset-password',
 	ingredients: '/ingredients',
+	repeat: 'report',
 } as const;
