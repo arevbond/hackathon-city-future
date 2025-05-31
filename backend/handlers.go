@@ -52,7 +52,11 @@ func (s *Server) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 	env := envelope{
 		"status": "available",
 	}
-	_ = s.writeJSON(w, http.StatusOK, env, nil)
+
+	err := s.writeJSON(w, http.StatusOK, env, nil)
+	if err != nil {
+		s.errorResponse(w, r, http.StatusInternalServerError, err)
+	}
 }
 
 // createRequest godoc
@@ -68,9 +72,21 @@ func (s *Server) healthcheckHandler(w http.ResponseWriter, r *http.Request) {
 // @Router       /api/request [post]
 func (s *Server) createRequest(w http.ResponseWriter, r *http.Request) {
 	var input CreateRequest
-	_ = s.readJSON(w, r, &input)
-	id, _ := s.db.CreateRequest(r.Context(), input)
-	_ = s.writeJSON(w, http.StatusCreated, envelope{"id": id, "status": "new"}, nil)
+
+	if err := s.readJSON(w, r, &input); err != nil {
+		s.badRequestResponse(w, r, err)
+		return
+	}
+
+	id, err := s.db.CreateRequest(r.Context(), input)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusCreated, envelope{"id": id, "status": "new"}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
 }
 
 // allRequests godoc
@@ -84,8 +100,16 @@ func (s *Server) createRequest(w http.ResponseWriter, r *http.Request) {
 // @Router       /api/requests [get]
 func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 	status := r.URL.Query().Get("status")
-	requests, _ := s.db.Requests(r.Context(), ConvertStatus(status))
-	_ = s.writeJSON(w, http.StatusOK, envelope{"requests": requests}, nil)
+
+	requests, err := s.db.Requests(r.Context(), ConvertStatus(status))
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"requests": requests}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
 }
 
 // requestByID godoc
@@ -100,9 +124,22 @@ func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 // @Router       /api/request/{id} [get]
 func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
-	id, _ := strconv.Atoi(idStr)
-	request, _ := s.db.Request(r.Context(), id)
-	_ = s.writeJSON(w, http.StatusOK, envelope{"request": request}, nil)
+
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		s.badRequestResponse(w, r, err)
+		return
+	}
+
+	request, err := s.db.Request(r.Context(), id)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"request": request}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+	}
 }
 
 // login godoc
@@ -125,6 +162,8 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 
 	if err := s.readJSON(w, r, &input); err != nil {
 		s.badRequestResponse(w, r, err)
+
+		return
 	}
 
 	user, err := s.db.User(r.Context(), input.Email)
@@ -132,18 +171,26 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		s.unauthorizedResponse(w, r)
 	} else if err != nil {
 		s.serverErrorResponse(w, r, err)
+
+		return
 	}
 
 	if !CheckPasswordHash(input.Password, user.HashPassword) {
 		s.unauthorizedResponse(w, r)
+
+		return
 	}
 
 	token, err := s.GenerateJWT(user.ID, string(user.Role))
 	if err != nil {
 		s.serverErrorResponse(w, r, err)
+
+		return
 	}
 
 	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
+
+		return
 	}
 }
