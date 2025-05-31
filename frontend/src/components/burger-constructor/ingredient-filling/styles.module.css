@@ -1,0 +1,27 @@
+.filling {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 16px;
+	height: 470px;
+	overflow-y: scroll;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	transition: border-color 0.3s ease-in-out;
+}
+
+.drop-fil {
+	border: 1px solid rgb(209, 69, 241);
+	transition: border-color 0.3s ease-in-out;
+}
+
+.over-fil {
+	border: 1px solid rgb(172, 250, 123);
+	transition: border-color 0.3s ease-in-out;
+}
+
+@media screen and (height <= 960px) {
+	.filling {
+		height: 370px;
+	}
+}

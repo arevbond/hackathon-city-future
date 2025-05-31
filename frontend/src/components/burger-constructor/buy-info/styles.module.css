@@ -1,0 +1,81 @@
+.container-modal {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgb(0 0 0 / 70%);
+}
+
+.modal {
+	/* width: 720px;
+	height: 720px; */
+	text-align: center;
+
+	/* position: relative;
+	background-color: #1c1c21;
+	border-radius: 40px; */
+}
+
+.logo {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	background: radial-gradient(
+		circle,
+		rgb(169 27 246 / 85.6%),
+		rgb(255 255 0 / 0%) 70%
+	);
+	opacity: 0;
+	animation: logo-animation 3s infinite ease-out;
+	clip-path: polygon(
+		50% 0%,
+		61% 35%,
+		98% 35%,
+		68% 57%,
+		79% 91%,
+		50% 70%,
+		21% 91%,
+		32% 57%,
+		2% 35%,
+		39% 35%
+	);
+}
+
+.check {
+	position: absolute;
+}
+
+@keyframes logo-animation {
+	0% {
+		transform: scale(0.5);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(3);
+		opacity: 0;
+	}
+}
+
+/* .close {
+	position: absolute;
+	transform: scale(2.5);
+	top: 40px;
+	right: 40px;
+	background-color: transparent;
+	padding: 7px;
+}
+
+.close:focus,
+.close:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+} */

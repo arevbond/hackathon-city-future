@@ -1,0 +1,37 @@
+.loader-container {
+	width: 100px;
+	height: 100px;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(238, 150, 241);
+	border-radius: 50%;
+	padding: 2px;
+}
+
+.comet {
+	width: 20px;
+	height: 20px;
+	background-color: rgb(219, 40, 243);
+	border-radius: 50%;
+	position: absolute;
+}
+
+.loader-block {
+	background-color: #1c1c21;
+	width: 30%;
+	height: 20%;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	flex-direction: column;
+}
+.input {
+	width: 80%;
+	height: 20px;
+	border-radius: 16px;
+	background-color: aliceblue;
+}

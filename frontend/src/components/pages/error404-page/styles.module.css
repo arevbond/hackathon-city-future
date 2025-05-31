@@ -1,0 +1,50 @@
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: calc(100vh - 100px);
+}
+
+.error-page {
+	height: 70%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.title {
+	font-size: 10.2rem;
+	animation: flicker 1.5s infinite alternate;
+	margin: 0;
+}
+
+.description {
+	font-size: 3rem;
+	text-transform: uppercase;
+	color: #fff;
+	text-shadow: 0 0 7px #fff, 0 0 10px #fff, 0 0 21px #fff,
+		0 0 42px rgb(133, 74, 242), 0 0 82px rgb(133, 74, 242),
+		0 0 92px rgb(133, 74, 242), 0 0 102px rgb(133, 74, 242),
+		0 0 151px rgb(133, 74, 242);
+}
+
+@keyframes flicker {
+	0%,
+	18%,
+	22%,
+	25%,
+	53%,
+	57%,
+	100% {
+		text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff,
+			0 0 40px rgb(133, 74, 242), 0 0 80px rgb(133, 74, 242),
+			0 0 90px rgb(133, 74, 242), 0 0 100px rgb(133, 74, 242),
+			0 0 150px rgb(133, 74, 242);
+	}
+
+	20%,
+	24%,
+	55% {
+		text-shadow: none;
+	}
+}

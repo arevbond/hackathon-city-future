@@ -1,0 +1,35 @@
+.img {
+	height: 100%;
+	width: 100%;
+}
+
+.img-layout {
+	width: 64px;
+	height: 64px;
+  border: 1px solid rgb(194, 84, 245);
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  background-color: black;
+}
+
+.img-layout:not(:first-of-type) {
+	margin-left: -20px;
+}
+
+.imgs {
+	display: flex;
+	justify-content: flex-start;
+}
+
+.layout-last {
+	position: relative;
+}
+
+.img-last {
+  filter: brightness(0.5);
+}
+.count {
+  position: absolute;
+}

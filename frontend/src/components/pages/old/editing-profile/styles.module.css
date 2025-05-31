@@ -1,0 +1,25 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.actions {
+	display: flex;
+	gap: 24px;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.cancel {
+	background-color: transparent;
+	color: #4c4cff;
+	padding: 16px 8px;
+	transition: all 0.3s ease;
+}
+
+.cancel:hover {
+	color: #3d3dfc;
+	transform: translateY(-5px);
+	transition: all 0.3s ease;
+}

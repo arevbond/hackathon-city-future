@@ -1,0 +1,42 @@
+.header {
+	/* border: 1px solid red; */
+	background-color: #1c1c21;
+}
+
+.nav-link {
+	color: white;
+	background-color: inherit;
+}
+
+.nav-link:hover {
+	/* color: rgb(0, 255, 238); */
+}
+
+/* от старой версии */
+
+/* .container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+} */
+
+/* .nav {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+} */
+
+/* другая версия */
+
+.nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 20px;
+}
+
+.burger-ui {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}

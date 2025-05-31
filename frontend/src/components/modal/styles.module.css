@@ -1,0 +1,32 @@
+/* .container-modal {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.7);
+} */
+
+.modal {
+	position: relative;
+	background-color: #1c1c21;
+	border-radius: 40px;
+	min-width: 720px;
+}
+
+.close {
+	position: absolute;
+	top: 40px;
+	right: 40px;
+	padding: 7px;
+	background-color: transparent;
+	transform: scale(1.5);
+}
+
+.close:focus,
+.close:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+}

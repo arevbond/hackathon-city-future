@@ -1,0 +1,11 @@
+.layout {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	height: 100vh;
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+
+.main {
+	height: calc(100vh - 150px);
+}

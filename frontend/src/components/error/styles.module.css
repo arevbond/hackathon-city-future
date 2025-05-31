@@ -1,0 +1,23 @@
+.error-container {
+	width: 80%;
+	height: 40%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: rgb(87, 7, 90);
+	border-radius: 16px;
+	padding: 2px;
+}
+
+.error-block {
+	background-color: #1c1c21;
+	width: 30%;
+	height: 20%;
+	padding: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 20px;
+	flex-direction: column;
+}
