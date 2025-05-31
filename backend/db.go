@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"net"
 	"strconv"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/stdlib"
@@ -37,4 +39,62 @@ func NewConn(cfg CfgPostgres) (*sqlx.DB, error) {
 	}
 
 	return sqlx.NewDb(pgxdb, "pgx"), nil
+}
+
+func (s *Storage) CreateRequest(ctx context.Context, request CreateRequest) (int, error) {
+	query := `INSERT INTO requests (client_name, client_email, title, description, created_at, updated_at)
+				VALUES ($1, $2, $3, $4, $5, $6)
+				RETURNING id;`
+
+	args := []any{request.ClientName, request.ClientEmail, request.Title, request.Description, time.Now(), time.Now()}
+
+	var id int
+
+	row := s.db.QueryRowContext(ctx, query, args...)
+	if err := row.Scan(&id); err != nil {
+		return -1, fmt.Errorf("can't create new request: %w", err)
+	}
+
+	if err := row.Err(); err != nil {
+		return -1, fmt.Errorf("err while processing output: %w", err)
+	}
+
+	return id, nil
+}
+
+func (s *Storage) Requests(ctx context.Context, status RequestStatus) ([]*Request, error) {
+	var query string
+	var args []any
+	if status != RequestWithoutStatus {
+		query = `SELECT id, client_name, client_email, title, description, status, created_at, updated_at
+			FROM requests
+			WHERE status = $1;`
+		args = []any{status}
+	} else {
+		query = `SELECT id, client_name, client_email, title, description, status, created_at, updated_at
+		FROM requests;`
+	}
+
+	requests := []*Request{}
+
+	err := s.db.SelectContext(ctx, &requests, query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("can't get requests from db: %w", err)
+	}
+
+	return requests, nil
+}
+
+func (s *Storage) Request(ctx context.Context, id int) (*Request, error) {
+	query := `SELECT id, client_name, client_email, title, description, status, created_at, updated_at
+			FROM requests
+			WHERE id = $1;`
+
+	var request Request
+
+	if err := s.db.GetContext(ctx, &request, query, id); err != nil {
+		return nil, fmt.Errorf("can't get request, from db: %w", err)
+	}
+
+	return &request, nil
 }

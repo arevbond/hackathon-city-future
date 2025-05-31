@@ -5,11 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log/slog"
 	"net/http"
 	"strings"
 )
-
-type envelope map[string]any
 
 func (s *Server) writeJSON(w http.ResponseWriter, status int, data envelope, headers http.Header) error {
 	js, err := json.MarshalIndent(data, "", "\t")
@@ -88,8 +87,18 @@ func (s *Server) errorResponse(w http.ResponseWriter, r *http.Request, status in
 }
 
 func (s *Server) logError(r *http.Request, err error) {
-	s.logger.Error(err.Error(), map[string]string{
-		"request_method": r.Method,
-		"request_url":    r.URL.String(),
-	})
+	s.logger.Error(err.Error(),
+		slog.String("request_method", r.Method),
+		slog.String("request_url", r.URL.String()))
+}
+
+func (s *Server) badRequestResponse(w http.ResponseWriter, r *http.Request, err error) {
+	s.errorResponse(w, r, http.StatusBadRequest, err.Error())
+}
+
+func (s *Server) serverErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
+	s.logError(r, err)
+
+	message := "the server encountered a problem and could not process your request"
+	s.errorResponse(w, r, http.StatusInternalServerError, message)
 }

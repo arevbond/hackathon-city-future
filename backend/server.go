@@ -8,7 +8,7 @@ import (
 )
 
 type Server struct {
-	*http.Server
+	Srv    *http.Server
 	db     *Storage
 	logger *slog.Logger
 }
@@ -16,14 +16,14 @@ type Server struct {
 func NewServer(cfg CfgServer, db *Storage, log *slog.Logger) *Server {
 	addr := net.JoinHostPort(cfg.Host, strconv.Itoa(cfg.Port))
 	s := &Server{
-		Server: &http.Server{
+		Srv: &http.Server{
 			Addr: addr,
 		},
 		db:     db,
 		logger: log,
 	}
 
-	s.Handler = s.routes()
+	s.Srv.Handler = s.routes()
 
 	return s
 }

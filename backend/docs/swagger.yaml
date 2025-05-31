@@ -1,6 +1,90 @@
+basePath: /
+definitions:
+  main.CreateRequest:
+    properties:
+      client_email:
+        type: string
+      client_name:
+        type: string
+      description:
+        type: string
+      title:
+        type: string
+    type: object
+  main.CreateRequestResponse:
+    properties:
+      id:
+        type: integer
+      status:
+        type: string
+    type: object
+  main.HealthResponse:
+    properties:
+      status:
+        type: string
+    type: object
+  main.PongResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  main.Request:
+    properties:
+      client_email:
+        type: string
+      client_name:
+        type: string
+      create_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        $ref: '#/definitions/main.RequestStatus'
+      title:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  main.RequestListResponse:
+    properties:
+      requests:
+        items:
+          $ref: '#/definitions/main.Request'
+        type: array
+    type: object
+  main.RequestResponse:
+    properties:
+      request:
+        $ref: '#/definitions/main.Request'
+    type: object
+  main.RequestStatus:
+    enum:
+    - ""
+    type: string
+    x-enum-varnames:
+    - RequestWithoutStatus
+host: localhost:8080
 info:
   contact: {}
+  description: Simple API for hackathon project
+  title: My Hackathon API
+  version: "1.0"
 paths:
+  /api/health:
+    get:
+      description: Проверяет, доступен ли сервер
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.HealthResponse'
+      summary: Проверка состояния сервера
+      tags:
+      - health
   /api/ping:
     get:
       description: Возвращает "pong" при GET-запросе
@@ -10,10 +94,97 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/main.PongResponse'
       summary: Проверка доступности API
       tags:
       - health
+  /api/request:
+    post:
+      consumes:
+      - application/json
+      description: Создаёт новый запрос в системе
+      parameters:
+      - description: Данные нового запроса
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/main.CreateRequestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создание запроса
+      tags:
+      - requests
+  /api/request/{id}:
+    get:
+      description: Возвращает запрос по его идентификатору
+      parameters:
+      - description: ID запроса
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.RequestResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получение запроса по ID
+      tags:
+      - requests
+  /api/requests:
+    get:
+      description: Возвращает все запросы с фильтром по статусу (опционально)
+      parameters:
+      - description: Статус запроса
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.RequestListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получение списка запросов
+      tags:
+      - requests
 swagger: "2.0"

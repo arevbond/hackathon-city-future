@@ -29,10 +29,10 @@ func main() {
 	db := NewStorage(conn, logger)
 	srv := NewServer(cfg.Server, db, logger)
 
-	log.Println("cfg", cfg)
-	log.Println("server started")
+	logger.Debug("cfg", slog.Any("cfg", cfg))
+	logger.Info("server started")
 
-	if err = srv.ListenAndServe(); err != nil {
+	if err = srv.Srv.ListenAndServe(); err != nil {
 		log.Fatal(err)
 	}
 }
