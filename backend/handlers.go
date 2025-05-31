@@ -24,7 +24,10 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /request", s.createRequest)
 	mux.HandleFunc("GET /requests", s.allRequests)
 	mux.HandleFunc("GET /request/{id}", s.requestByID)
+	mux.HandleFunc("GET /requests/{id}/assign-tech", s.assignTechToRequest)
 
+	// tech-reports
+	mux.HandleFunc("POST /tech-report", s.createTechReport)
 	return mux
 }
 
@@ -189,6 +192,68 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+func (s *Server) assignTechToRequest(w http.ResponseWriter, r *http.Request) {
+	requestIDStr := r.PathValue("id")
+	requestID, err := strconv.Atoi(requestIDStr)
+	if err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	var input struct {
+		TechUserID int `json:"tech_user_id"`
+	}
+
+	if err = s.readJSON(w, r, &input); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	err = s.db.AssignTechToRequest(r.Context(), requestID, input.TechUserID)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+type CreateTechReportRequest struct {
+	RequestID  int    `json:"request_id"`
+	TechUserID int    `json:"tech_user_id"`
+	Report     string `json:"report"`
+}
+
+func (s *Server) createTechReport(w http.ResponseWriter, r *http.Request) {
+	var request CreateTechReportRequest
+
+	if err := s.readJSON(w, r, &request); err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	reportID, err := s.db.CreateTechReport(r.Context(), request)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusCreated, envelope{"id": reportID}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return

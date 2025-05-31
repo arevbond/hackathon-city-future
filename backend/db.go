@@ -112,3 +112,46 @@ func (s *Storage) User(ctx context.Context, email string) (*User, error) {
 
 	return &user, nil
 }
+
+func (s *Storage) AssignTechToRequest(ctx context.Context, requestID int, techID int) error {
+	query := `UPDATE requests
+             SET tech_user_id = $1
+             WHERE id = $2;`
+
+	result, err := s.db.ExecContext(ctx, query, techID, requestID)
+	if err != nil {
+		return fmt.Errorf("can't assign tech to request: %w", err)
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("can't get rows affected: %w", err)
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("request with id %d not found", requestID)
+	}
+
+	return nil
+}
+
+func (s *Storage) CreateTechReport(ctx context.Context, createReport CreateTechReportRequest) (int, error) {
+	query := `INSERT INTO tech_reports (request_id, tech_user_id, report)
+				VALUES ($1, $2 ,$3)
+				RETURNING id;`
+
+	args := []any{createReport.RequestID, createReport.TechUserID, createReport.Report}
+
+	var reportID int
+
+	row := s.db.QueryRowContext(ctx, query, args...)
+	if err := row.Scan(&reportID); err != nil {
+		return -1, fmt.Errorf("can't create new tech report: %w", err)
+	}
+
+	if err := row.Err(); err != nil {
+		return -1, fmt.Errorf("err while processing output from tech report: %w", err)
+	}
+
+	return reportID, nil
+}

@@ -13,6 +13,7 @@ CREATE TABLE users (
 -- Таблица заявок
 CREATE TABLE requests (
       id SERIAL PRIMARY KEY,
+      tech_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
       client_name TEXT NOT NULL,
       client_email TEXT NOT NULL,
       title TEXT NOT NULL,
