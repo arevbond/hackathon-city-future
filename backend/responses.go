@@ -60,3 +60,7 @@ type CreateTechReportResponse struct {
 type CreateCommentResponse struct {
 	ID int `json:"id" example:"789"`
 }
+
+type ErrorResponse struct {
+	Error string `json:"error" example:"invalid request format"` // Описание ошибки
+}

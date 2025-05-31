@@ -6,6 +6,17 @@ definitions:
         example: 123
         type: integer
     type: object
+  main.Comment:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      user_id:
+        type: integer
+    type: object
   main.CreateCommentRequest:
     properties:
       content:
@@ -56,6 +67,13 @@ definitions:
       id:
         example: 456
         type: integer
+    type: object
+  main.ErrorResponse:
+    properties:
+      error:
+        description: Описание ошибки
+        example: invalid request format
+        type: string
     type: object
   main.HealthResponse:
     properties:
@@ -129,6 +147,35 @@ definitions:
         example: "true"
         type: string
     type: object
+  main.TechReport:
+    properties:
+      comments:
+        items:
+          $ref: '#/definitions/main.Comment'
+        type: array
+      created_at:
+        type: string
+      id:
+        type: integer
+      report:
+        type: string
+      request_id:
+        type: integer
+      tech_user_id:
+        type: integer
+    type: object
+  main.TechReportRequest:
+    properties:
+      request_id:
+        type: integer
+    type: object
+  main.TechReportResponse:
+    properties:
+      reports:
+        items:
+          $ref: '#/definitions/main.TechReport'
+        type: array
+    type: object
   main.UpdateStatusRequest:
     properties:
       public_note:
@@ -199,7 +246,7 @@ paths:
             type: object
       summary: Создание комментария
       tags:
-      - comments
+      - tech-reports
   /health:
     get:
       description: Проверяет, доступен ли сервер
@@ -466,6 +513,37 @@ paths:
               type: string
             type: object
       summary: Создание технического отчета
+      tags:
+      - tech-reports
+  /tech-reports:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает все технические отчеты по указанному request_id вместе
+        с комментариями к каждому отчету
+      parameters:
+      - description: ID запроса для получения отчетов
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.TechReportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешное получение технических отчетов
+          schema:
+            $ref: '#/definitions/main.TechReportResponse'
+        "400":
+          description: Неверный запрос
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/main.ErrorResponse'
+      summary: Получить технические отчеты с комментариями
       tags:
       - tech-reports
 swagger: "2.0"

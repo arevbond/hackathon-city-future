@@ -28,9 +28,9 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("PATCH /requests/{id}/status", s.updateStatusRequest)
 
 	// tech-reports
-	mux.HandleFunc("POST /tech-report", s.createTechReport)
+	mux.HandleFunc("POST /tech-reports", s.createTechReport)
 	mux.HandleFunc("POST /comments", s.createComment)
-	//mux.HandleFunc("GET /tech-report", s.getTechReportWithComment)
+	mux.HandleFunc("GET /tech-reports", s.getTechReportWithComment)
 
 	return mux
 }
@@ -343,7 +343,7 @@ type CreateCommentRequest struct {
 // createComment godoc
 // @Summary      Создание комментария
 // @Description  Создает новый комментарий к техническому отчету
-// @Tags         comments
+// @Tags         tech-reports
 // @Accept       json
 // @Produce      json
 // @Param        comment  body      CreateCommentRequest   true  "Данные комментария"
@@ -374,4 +374,44 @@ func (s *Server) createComment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//func (s *Server)
+type TechReportRequest struct {
+	RequestID int `json:"request_id"`
+}
+
+type TechReportResponse struct {
+	Reports []TechReport `json:"reports"`
+}
+
+// getTechReportWithComment получает технические отчеты с комментариями
+// @Summary Получить технические отчеты с комментариями
+// @Description Возвращает все технические отчеты по указанному request_id вместе с комментариями к каждому отчету
+// @Tags tech-reports
+// @Accept json
+// @Produce json
+// @Param request body TechReportRequest true "ID запроса для получения отчетов"
+// @Success 200 {object} TechReportResponse "Успешное получение технических отчетов"
+// @Failure 400 {object} ErrorResponse "Неверный запрос"
+// @Failure 500 {object} ErrorResponse "Внутренняя ошибка сервера"
+// @Router /tech-reports [get]
+func (s *Server) getTechReportWithComment(w http.ResponseWriter, r *http.Request) {
+	var request TechReportRequest
+
+	if err := s.readJSON(w, r, &request); err != nil {
+		s.badRequestResponse(w, r, err)
+
+		return
+	}
+
+	result, err := s.db.GetTechReportsWithComments(r.Context(), request.RequestID)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, TechReportResponse{Reports: result}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}

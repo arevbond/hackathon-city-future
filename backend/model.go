@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type RequestStatus string
 
@@ -60,10 +63,35 @@ type User struct {
 	HashPassword string   `db:"hash_password" json:"-"`
 }
 
+// Структура для результата запроса (flat структура для sqlx)
+type TechReportWithComment struct {
+	// Поля tech_report
+	ReportID        int           `db:"report_id"`
+	RequestID       int           `db:"request_id"`
+	TechUserID      sql.NullInt64 `db:"tech_user_id"`
+	Report          string        `db:"report"`
+	ReportCreatedAt time.Time     `db:"report_created_at"`
+
+	// Поля comment (могут быть null при LEFT JOIN)
+	CommentID        sql.NullInt64  `db:"comment_id"`
+	CommentUserID    sql.NullInt64  `db:"comment_user_id"`
+	CommentContent   sql.NullString `db:"comment_content"`
+	CommentCreatedAt sql.NullTime   `db:"comment_created_at"`
+}
+
+// Вспомогательные структуры для финального результата
+type Comment struct {
+	ID        int       `json:"id"`
+	UserID    *int      `json:"user_id"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+}
+
 type TechReport struct {
-	ID         int       `db:"id" json:"id"`
-	RequestID  int       `db:"request_id" json:"request_idt"`
-	TechUserID int       `db:"tech_user_id" json:"tech_user_id"`
-	Report     string    `db:"report" json:"report"`
-	CreatedAt  time.Time `db:"created_at" json:"created_at"`
+	ID         int       `json:"id"`
+	RequestID  int       `json:"request_id"`
+	TechUserID *int      `json:"tech_user_id"`
+	Report     string    `json:"report"`
+	CreatedAt  time.Time `json:"created_at"`
+	Comments   []Comment `json:"comments"`
 }

@@ -25,7 +25,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "comments"
+                    "tech-reports"
                 ],
                 "summary": "Создание комментария",
                 "parameters": [
@@ -473,6 +473,52 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/tech-reports": {
+            "get": {
+                "description": "Возвращает все технические отчеты по указанному request_id вместе с комментариями к каждому отчету",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "tech-reports"
+                ],
+                "summary": "Получить технические отчеты с комментариями",
+                "parameters": [
+                    {
+                        "description": "ID запроса для получения отчетов",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.TechReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Успешное получение технических отчетов",
+                        "schema": {
+                            "$ref": "#/definitions/main.TechReportResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Внутренняя ошибка сервера",
+                        "schema": {
+                            "$ref": "#/definitions/main.ErrorResponse"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -482,6 +528,23 @@ const docTemplate = `{
                 "tech_user_id": {
                     "type": "integer",
                     "example": 123
+                }
+            }
+        },
+        "main.Comment": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
@@ -559,6 +622,16 @@ const docTemplate = `{
                 "id": {
                     "type": "integer",
                     "example": 456
+                }
+            }
+        },
+        "main.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "Описание ошибки",
+                    "type": "string",
+                    "example": "invalid request format"
                 }
             }
         },
@@ -669,6 +742,51 @@ const docTemplate = `{
                 "success": {
                     "type": "string",
                     "example": "true"
+                }
+            }
+        },
+        "main.TechReport": {
+            "type": "object",
+            "properties": {
+                "comments": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.Comment"
+                    }
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "report": {
+                    "type": "string"
+                },
+                "request_id": {
+                    "type": "integer"
+                },
+                "tech_user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.TechReportRequest": {
+            "type": "object",
+            "properties": {
+                "request_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "main.TechReportResponse": {
+            "type": "object",
+            "properties": {
+                "reports": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/main.TechReport"
+                    }
                 }
             }
         },

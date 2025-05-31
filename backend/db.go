@@ -198,3 +198,79 @@ func (s *Storage) CreateComment(ctx context.Context, reportID int, userID int, c
 
 	return commentID, nil
 }
+
+func convertToTechReports(rows []TechReportWithComment) []TechReport {
+	reportMap := make(map[int]*TechReport)
+
+	for _, row := range rows {
+		// Создаем или получаем существующий репорт
+		if _, exists := reportMap[row.ReportID]; !exists {
+			techUserID := (*int)(nil)
+			if row.TechUserID.Valid {
+				id := int(row.TechUserID.Int64)
+				techUserID = &id
+			}
+
+			reportMap[row.ReportID] = &TechReport{
+				ID:         row.ReportID,
+				RequestID:  row.RequestID,
+				TechUserID: techUserID,
+				Report:     row.Report,
+				CreatedAt:  row.ReportCreatedAt,
+				Comments:   []Comment{},
+			}
+		}
+
+		// Добавляем комментарий, если он существует
+		if row.CommentID.Valid {
+			commentUserID := (*int)(nil)
+			if row.CommentUserID.Valid {
+				id := int(row.CommentUserID.Int64)
+				commentUserID = &id
+			}
+
+			comment := Comment{
+				ID:        int(row.CommentID.Int64),
+				UserID:    commentUserID,
+				Content:   row.CommentContent.String,
+				CreatedAt: row.CommentCreatedAt.Time,
+			}
+
+			reportMap[row.ReportID].Comments = append(reportMap[row.ReportID].Comments, comment)
+		}
+	}
+
+	// Преобразуем map в slice
+	result := make([]TechReport, 0, len(reportMap))
+	for _, report := range reportMap {
+		result = append(result, *report)
+	}
+
+	return result
+}
+
+func (s *Storage) GetTechReportsWithComments(ctx context.Context, requestID int) ([]TechReport, error) {
+	query := `
+        SELECT 
+            tr.id as report_id,
+            tr.request_id,
+            tr.tech_user_id,
+            tr.report,
+            tr.created_at as report_created_at,
+            c.id as comment_id,
+            c.user_id as comment_user_id,
+            c.content as comment_content,
+            c.created_at as comment_created_at
+        FROM tech_reports tr
+        LEFT JOIN comments c ON tr.id = c.tech_report_id
+        WHERE tr.request_id = $1
+        ORDER BY tr.created_at ASC, c.created_at ASC;`
+
+	var rows []TechReportWithComment
+	err := s.db.Select(&rows, query, requestID)
+	if err != nil {
+		return nil, err
+	}
+
+	return convertToTechReports(rows), nil
+}
