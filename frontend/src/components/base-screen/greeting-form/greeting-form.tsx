@@ -6,14 +6,14 @@ import styles from './style.module.css';
 export const GreetingForm = () => {
 	return (
 		<div className={styles.greetform}>
-			<h2>
-				<span>краткий пинг</span> - и мы в деле!
-			</h2>
-			<p>
+			<p className={styles.title}>
+				<span className={styles.pixel}>краткий пинг</span> - и мы в деле!
+			</p>
+			<p className={styles.description}>
 				Форма простая, как DevOps-шутка. Вы пишете, что нужно — мы читаем,
 				анализируем и отвечаем по делу.
 			</p>
-			<img className={styles.download} src={download} alt={':)'} />
+			<img className={styles.joystick} src={download} alt={':)'} />
 			<img className={styles.lamp} src={lamp} alt={':)'} />
 			<Form />
 		</div>

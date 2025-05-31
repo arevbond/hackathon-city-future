@@ -1,6 +1,51 @@
 .greetform {
+	position: relative;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 25px;
 	padding: 80px;
-	/*background-image: url("../assets/bac");*/
+	background-image: url('./assets/background.jpg');
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 24px; /* как на скрине */
+	width: 100%;
+}
+
+.lamp {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 180px;
+	z-index: 0;
+}
+
+/* Джойстик (или загружающая картинка) */
+.joystick {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 180px;
+	z-index: 0;
+}
+
+.title {
+	margin: 0;
+	font-size: 50px;
+	text-transform: uppercase;
+	text-align: center;
+	color: white;
+
+}
+
+.description {
+	font-size: 30px;
+	color: white;
+	max-width: 770px;
+	text-align: center;
+}
+
+.pixel {
+	font-family: 'EpilepsySans', 'Jost', 'Inter', 'Avenir', 'Helvetica', 'Arial', sans-serif;
 }
