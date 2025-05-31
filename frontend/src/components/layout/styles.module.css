@@ -2,8 +2,8 @@
 	display: grid;
 	grid-template-rows: auto 1fr;
 	height: 100vh;
-	overflow-y: hidden;
-	overflow-x: hidden;
+	/*overflow-y: hidden;*/
+	/*overflow-x: hidden;*/
 }
 
 .main {

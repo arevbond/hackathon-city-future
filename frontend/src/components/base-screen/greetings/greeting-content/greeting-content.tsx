@@ -11,18 +11,14 @@ export const GreetingContent = () => {
 				<h1 className={styles.mainTitle}>
 					РАЗРАБОТКА <span className={styles.blueText}>ПО</span>
 					<br />
-					НАЧИНАЕТСЯ С <span className={styles.blueText}>ПИНГА</span>
+					НАЧИНАЕТСЯ С ПИНГА
 				</h1>
 
 				{/* Описание */}
 				<div className={styles.description}>
-					<p>Никаких роботов. Никаких «мы всё автоматизировали».</p>
-					<p>
-						Вы подаёте заявку — её читает{' '}
-						<span className={styles.highlight}>техспециалист</span>.
-					</p>
-					<p>Мы оцениваем сроки, подбираем стек и собираем команду</p>
-					<p>под ваш темп.</p>
+					Никаких роботов. Никаких «мы всё автоматизировали». Вы подаёте заявку
+					— её читает <span className={styles.highlight}>техспециалист</span>.
+					Мы оцениваем сроки, подбираем стек и собираем команду под ваш темп.
 				</div>
 
 				{/* NavLink кнопка */}
