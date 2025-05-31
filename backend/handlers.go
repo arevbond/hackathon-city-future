@@ -290,6 +290,18 @@ type UpdateStatusRequest struct {
 	PublicNote string `json:"public_note"`
 }
 
+// updateStatusRequest godoc
+// @Summary      Обновление статуса запроса
+// @Description  Изменяет статус конкретного запроса по его ID
+// @Tags         requests
+// @Accept       json
+// @Produce      json
+// @Param        id      path      int                   true  "ID запроса"
+// @Param        status  body      UpdateStatusRequest   true  "Новый статус запроса"
+// @Success      200     {object}  SuccessResponse
+// @Failure      400     {object}  map[string]string
+// @Failure      500     {object}  map[string]string
+// @Router       /requests/{id}/status [patch]
 func (s *Server) updateStatusRequest(w http.ResponseWriter, r *http.Request) {
 	var req UpdateStatusRequest
 
