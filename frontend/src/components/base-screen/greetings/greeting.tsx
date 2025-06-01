@@ -3,8 +3,11 @@ import robot from '../assets/robot.png';
 import styles from './styles.module.css';
 import { GreetingContent } from './greeting-content/greeting-content';
 import { GreetingForm } from '../greeting-form/greeting-form';
+import { useRef } from 'react';
 
 export const Greeting = () => {
+	const formRef = useRef<HTMLDivElement>(null);
+
 	return (
 		<>
 			<section className={styles.greeting}>
@@ -13,9 +16,9 @@ export const Greeting = () => {
 				</div>
 				<div className={styles.arrow}>
 					<Arrow />
-					<GreetingContent />
+					<GreetingContent formScrollRef={formRef} />
 				</div>
-				<GreetingForm />
+				<GreetingForm ref={formRef} />
 			</section>
 		</>
 	);

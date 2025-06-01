@@ -1,9 +1,15 @@
 // DevelopmentBanner.jsx
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { RefObject } from 'react';
 import styles from './styles.module.css';
 
-export const GreetingContent = () => {
+type TProps = {
+	formScrollRef?: RefObject<HTMLDivElement>;
+};
+export const GreetingContent = ({ formScrollRef }: TProps) => {
+	const onNavigate = () => {
+		formScrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+	};
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.bannerContent}>
@@ -21,10 +27,10 @@ export const GreetingContent = () => {
 					Мы оцениваем сроки, подбираем стек и собираем команду под ваш темп.
 				</div>
 
-				{/* NavLink кнопка */}
-				<NavLink to='/project' className={styles.ctaButton}>
+				{/* NavLink кнопка to='/project' */}
+				<button onClick={onNavigate} className={styles.ctaButton}>
 					запинговать проект
-				</NavLink>
+				</button>
 			</div>
 		</div>
 	);

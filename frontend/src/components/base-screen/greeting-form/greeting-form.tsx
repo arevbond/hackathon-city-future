@@ -2,10 +2,12 @@ import download from './assets/download.png';
 import lamp from './assets/lamp.png';
 import { Form } from './form/form';
 import styles from './style.module.css';
+import { forwardRef } from 'react';
 
-export const GreetingForm = () => {
+// eslint-disable-next-line react/display-name
+export const GreetingForm = forwardRef<HTMLDivElement>((_, ref) => {
 	return (
-		<div className={styles.greetform}>
+		<div className={styles.greetform} ref={ref}>
 			<p className={styles.title}>
 				<span className={styles.pixel}>краткий пинг</span> - и мы в деле!
 			</p>
@@ -18,4 +20,4 @@ export const GreetingForm = () => {
 			<Form />
 		</div>
 	);
-};
+});
