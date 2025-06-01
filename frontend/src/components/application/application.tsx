@@ -17,7 +17,7 @@ export const Application = () => {
 			<ApplicationHeader />
 			<Form1 />
 			<Form2 />
-			<button onClick={onNavigate} className={styles['beautiful-button']}>
+			<button onClick={onNavigate} className={styles.button}>
 				Отправить
 			</button>
 		</div>
