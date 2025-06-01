@@ -99,7 +99,7 @@
 		align-items: center;
 		justify-content: flex-start;
 		padding: 20px 15px;
-		gap: 30px;
+		gap: 20px;
 		min-height: auto;
 	}
 
@@ -107,7 +107,7 @@
 		flex: none;
 		width: 100%;
 		min-width: auto;
-		order: 1;
+		order: 2; /* Робот первый */
 	}
 
 	.robot img {
@@ -120,12 +120,17 @@
 		width: 100%;
 		min-width: auto;
 		margin-top: 0;
-		order: 2;
+		order: 1; /* Стрелка и контент вторые */
+	}
+
+	/* На мобильных переворачиваем порядок внутри arrow */
+	.arrow {
+		flex-direction: column-reverse;
 	}
 
 	.arrow svg {
 		width: 280px;
-		margin: 20px 0;
+		margin: 0 0 20px 0; /* Убираем верхний отступ, оставляем нижний */
 	}
 
 	/* GreetingForm */
@@ -140,7 +145,7 @@
 @media (max-width: 480px) {
 	.greeting {
 		padding: 15px 10px;
-		gap: 20px;
+		gap: 15px;
 	}
 
 	.robot img {
@@ -162,10 +167,11 @@
 
 	.arrow svg {
 		width: 180px;
+		margin: 10px 0;
 	}
 
 	.greeting {
 		padding: 10px;
-		gap: 15px;
+		gap: 10px;
 	}
 }
