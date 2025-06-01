@@ -11,18 +11,22 @@ export const AppHeader = () => {
 			<Container>
 				<nav className={styles.nav}>
 					<div>
-						<PingDev />
+						<NavLink to={pathPages.home} className={styles['nav-link']}>
+							<PingDev />
+						</NavLink>
 					</div>
 					<section className={styles.links}>
-						<NavLink to={pathPages.home} className={styles['nav-link']}>
-							{({ isActive }) => (
-								<NavElement
-									name='товар'
-									className={
-										isActive ? styles.active : styles.link
-									}></NavElement>
-							)}
-						</NavLink>
+						{/*На всякий случай остаётся,если нужно будет добавить линки*/}
+						{/*<NavLink to={pathPages.home} className={styles['nav-link']}>*/}
+						{/*	{({ isActive }) => (*/}
+						{/*		<NavElement*/}
+						{/*			name='Пинг'*/}
+						{/*			className={*/}
+						{/*				isActive ? styles.active : styles.link*/}
+						{/*			}></NavElement>*/}
+						{/*	)}*/}
+						{/*	<PingDev />*/}
+						{/*</NavLink>*/}
 						<NavLink to={pathPages.login} className={styles['nav-link']}>
 							{({ isActive }) => (
 								<NavElement
