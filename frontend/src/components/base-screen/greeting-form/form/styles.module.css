@@ -2,7 +2,15 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: calc(100vh - 100px);
+	width: 100%;
+}
+
+.register {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	z-index: 5;
+	position: relative;
 }
 
 .form {
@@ -11,8 +19,14 @@
 	flex-direction: column;
 	justify-content: space-between;
 	gap: 24px;
-	padding: 30px 40px;
-	font-family: 'Jost';
+	width: 840px;
+	max-width: 100%;
+	padding: 2rem;
+	font-family: 'Arial', sans-serif;
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
+	z-index: 10;
 }
 
 .button-in {
@@ -29,31 +43,18 @@
 	align-items: center;
 }
 
-.form {
-	z-index: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: 840px;
-	height: 360px;
-	padding: 2rem;
-	font-family: 'Arial', sans-serif;
-	background-color: white;
-	border-radius: 12px;
-	box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
-}
-
 input[type="text"],
 input[type="tel"],
 input[type="email"] {
 	width: 100%;
-	padding: 0.5rem;
+	padding: 0.75rem;
 	font-size: 16px;
 	background: transparent;
 	border: none;
 	border-bottom: 2px dotted #007bff;
 	outline: none;
 	transition: border-color 0.3s;
+	box-sizing: border-box;
 }
 
 input[type="text"]:focus,
@@ -68,10 +69,12 @@ input[type="email"]:focus {
 	gap: 0.5rem;
 	color: #666666;
 	font-size: 12px;
+	line-height: 1.4;
 }
 
 .checkbox input {
 	margin-top: 3px;
+	flex-shrink: 0;
 }
 
 .form button {
@@ -85,8 +88,102 @@ input[type="email"]:focus {
 	border-radius: 6px;
 	cursor: pointer;
 	transition: background 0.3s;
+	width: 100%;
 }
 
 .form button:hover {
 	background: #484646;
+}
+
+/* Адаптивность для формы */
+@media (max-width: 900px) {
+	.form {
+		width: 700px;
+		padding: 1.5rem;
+		gap: 20px;
+	}
+
+	input[type="text"],
+	input[type="tel"],
+	input[type="email"] {
+		padding: 0.6rem;
+		font-size: 15px;
+	}
+}
+
+@media (max-width: 768px) {
+	.form {
+		width: 100%;
+		max-width: 500px;
+		padding: 1.25rem;
+		gap: 18px;
+		margin: 0 10px;
+	}
+
+	input[type="text"],
+	input[type="tel"],
+	input[type="email"] {
+		padding: 0.6rem;
+		font-size: 16px;
+	}
+
+	.checkbox {
+		font-size: 11px;
+	}
+
+	.form button {
+		padding: 0.875rem;
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 480px) {
+	.form {
+		max-width: 100%;
+		padding: 1rem;
+		gap: 15px;
+		margin: 0 5px;
+		border-radius: 8px;
+	}
+
+	input[type="text"],
+	input[type="tel"],
+	input[type="email"] {
+		padding: 0.5rem;
+		font-size: 14px;
+	}
+
+	.checkbox {
+		font-size: 10px;
+		gap: 0.4rem;
+	}
+
+	.form button {
+		padding: 0.75rem;
+		font-size: 12px;
+		margin-top: 0.5rem;
+	}
+}
+
+@media (max-width: 360px) {
+	.form {
+		padding: 0.875rem;
+		gap: 12px;
+	}
+
+	input[type="text"],
+	input[type="tel"],
+	input[type="email"] {
+		padding: 0.4rem;
+		font-size: 13px;
+	}
+
+	.checkbox {
+		font-size: 9px;
+	}
+
+	.form button {
+		padding: 0.625rem;
+		font-size: 11px;
+	}
 }

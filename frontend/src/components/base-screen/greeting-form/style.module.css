@@ -1,3 +1,4 @@
+
 .greetform {
 	position: relative;
 	display: flex;
@@ -9,10 +10,11 @@
 	padding: 80px;
 	background-image: url('./assets/background.jpg');
 	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
 	border: 1px solid transparent;
-
-	/* background-repeat: no-repeat; */ /* как на скрине */
 	border-radius: 25px;
+	overflow: hidden;
 }
 
 .lamp {
@@ -21,17 +23,16 @@
 	bottom: 0;
 	z-index: 2;
 	width: 500px;
+	height: auto;
 }
-
-/* Джойстик (или загружающая картинка) */
 
 .joystick {
 	position: absolute;
-	bottom: 0;
 	bottom: 10%;
 	left: 0;
 	z-index: 0;
 	width: 300px;
+	height: auto;
 }
 
 .title {
@@ -40,7 +41,8 @@
 	font-size: 50px;
 	text-align: center;
 	text-transform: uppercase;
-
+	z-index: 3;
+	position: relative;
 }
 
 .description {
@@ -49,8 +51,145 @@
 	font-size: 30px;
 	font-family: "Jost";
 	text-align: center;
+	z-index: 3;
+	position: relative;
 }
 
 .pixel {
 	font-family: 'EpilepsySans', 'Jost', 'Inter', 'Avenir', 'Helvetica', 'Arial', sans-serif;
+}
+
+/* Планшеты */
+@media (max-width: 1200px) {
+	.greetform {
+		padding: 60px 40px;
+		gap: 20px;
+	}
+
+	.title {
+		font-size: 42px;
+	}
+
+	.description {
+		font-size: 26px;
+		max-width: 650px;
+	}
+
+	.lamp {
+		width: 400px;
+	}
+
+	.joystick {
+		width: 250px;
+	}
+}
+
+@media (max-width: 900px) {
+	.greetform {
+		padding: 50px 30px;
+		gap: 18px;
+	}
+
+	.title {
+		font-size: 36px;
+	}
+
+	.description {
+		font-size: 22px;
+		max-width: 550px;
+	}
+
+	.lamp {
+		width: 320px;
+	}
+
+	.joystick {
+		width: 200px;
+	}
+}
+
+/* Мобильные устройства */
+@media (max-width: 768px) {
+	.greetform {
+		padding: 40px 20px;
+		gap: 15px;
+		border-radius: 15px;
+		min-height: auto;
+	}
+
+	.title {
+		font-size: 28px;
+		line-height: 1.2;
+	}
+
+	.description {
+		font-size: 18px;
+		max-width: 100%;
+		line-height: 1.4;
+	}
+
+	.lamp {
+		width: 200px;
+		right: -20px;
+	}
+
+	.joystick {
+		width: 150px;
+		left: -20px;
+		bottom: 5%;
+	}
+}
+
+/* Маленькие мобильные */
+@media (max-width: 480px) {
+	.greetform {
+		padding: 30px 15px;
+		gap: 12px;
+		border-radius: 10px;
+	}
+
+	.title {
+		font-size: 24px;
+	}
+
+	.description {
+		font-size: 16px;
+		line-height: 1.3;
+	}
+
+	.lamp {
+		width: 150px;
+		right: -30px;
+	}
+
+	.joystick {
+		width: 120px;
+		left: -30px;
+	}
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+	.greetform {
+		padding: 25px 10px;
+		gap: 10px;
+	}
+
+	.title {
+		font-size: 20px;
+	}
+
+	.description {
+		font-size: 14px;
+	}
+
+	.lamp {
+		width: 120px;
+		right: -40px;
+	}
+
+	.joystick {
+		width: 100px;
+		left: -40px;
+	}
 }
