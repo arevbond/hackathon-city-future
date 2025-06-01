@@ -8,10 +8,13 @@ export const Login = () => {
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError('');
+		setIsLoading(true);
+
 		try {
 			const response = await fetch('http://localhost:8888/login', {
 				method: 'POST',
@@ -19,16 +22,15 @@ export const Login = () => {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					email: login, // предполагаем, что API ждёт email
+					email: login,
 					password: password,
 				}),
 			});
+
 			if (response.ok) {
 				const data = await response.json();
-				localStorage.setItem('token', data.token); // Сохраняем токен
-				// Перенаправляем на главную
+				localStorage.setItem('token', data.token);
 				window.location.href = '/';
-				// например: localStorage.setItem('token', data.token);
 			} else if (response.status === 401) {
 				setError('Неверный логин или пароль.');
 			} else {
@@ -37,51 +39,66 @@ export const Login = () => {
 		} catch (err) {
 			console.error('Ошибка сети:', err);
 			setError('Сервер недоступен.');
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
 	return (
-		<Container>
-			<Layout>
+		<Layout>
+			<Container>
 				<div className={styles.loginWrapper}>
 					<div className={styles.loginCard}>
+						<div className={styles.robotContainer}>
+							<img src={robot} alt="Robot" className={styles.robot} />
+						</div>
+
 						<div className={styles.content}>
-							<div className={styles.title}>АВТОРИЗАЦИЯ</div>
+							<h1 className={styles.title}>АВТОРИЗАЦИЯ</h1>
+
 							<form className={styles.form} onSubmit={handleSubmit}>
 								<div className={styles.inputGroup}>
 									<label className={styles.label}>Логин</label>
 									<input
-										type='text'
+										type="email"
 										className={styles.input}
-										placeholder='Логин'
 										value={login}
 										onChange={(e) => setLogin(e.target.value)}
+										placeholder="example@mail.com"
+										required
+										autoComplete="email"
 									/>
 								</div>
+
 								<div className={styles.inputGroup}>
 									<label className={styles.label}>Пароль</label>
 									<input
-										type='password'
+										type="password"
 										className={styles.input}
-										placeholder='Пароль'
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
+										placeholder="Введите пароль"
+										required
+										autoComplete="current-password"
 									/>
 								</div>
-								<button type='submit' className={styles.submitButton}>
-									Войти
+
+								<button
+									type="submit"
+									className={styles.submitButton}
+									disabled={isLoading}
+								>
+									{isLoading ? 'Входим...' : 'Войти'}
 								</button>
+
 								{error && (
-									<div style={{ color: 'red', marginTop: '10px' }}>{error}</div>
+									<div className={styles.error}>{error}</div>
 								)}
 							</form>
 						</div>
-						<div className={styles.robotContainer}>
-							<img src={robot} alt='robot' className={styles.robot} />
-						</div>
 					</div>
 				</div>
-			</Layout>
-		</Container>
+			</Container>
+		</Layout>
 	);
 };

@@ -3,15 +3,16 @@
 	justify-content: center;
 	align-items: center;
 	min-height: 100vh;
-	background: white; /* белый фон страницы */
+	background: white;
+	padding: 16px; /* добавляем отступы для мобильных */
 }
 
 .loginCard {
-	background: #3B68FF; /* насыщенный синий */
+	background: #3B68FF;
 	border-radius: 24px;
 	padding: 40px;
 	width: 100%;
-	max-width: 920px; /* ширина как на первом скрине */
+	max-width: 920px;
 	position: relative;
 	overflow: hidden;
 	display: flex;
@@ -77,6 +78,8 @@
 	color: black;
 	font-size: 16px;
 	outline: none;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .input::placeholder {
@@ -93,10 +96,23 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.3s ease;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .submitButton:hover {
 	background: #f0f0f0;
+}
+
+.submitButton:active {
+	transform: translateY(1px);
+}
+
+.error {
+	color: #ffcccc;
+	font-size: 14px;
+	margin-top: 8px;
+	text-align: center;
 }
 
 /* Робот справа */
@@ -112,4 +128,105 @@
 .robot {
 	max-width: 250px;
 	height: auto;
+}
+
+/* МОБИЛЬНАЯ АДАПТАЦИЯ */
+@media (max-width: 768px) {
+	.loginWrapper {
+		padding: 12px;
+		align-items: flex-start;
+		padding-top: 40px;
+	}
+
+	.loginCard {
+		flex-direction: column;
+		padding: 32px 24px;
+		border-radius: 20px;
+		max-width: 100%;
+		gap: 32px;
+	}
+
+	.content {
+		width: 100%;
+		order: 2;
+	}
+
+	.title {
+		font-size: 28px;
+		text-align: center;
+		margin-bottom: 16px;
+		letter-spacing: 1px;
+	}
+
+	.robotContainer {
+		width: 100%;
+		order: 1;
+	}
+
+	.robot {
+		max-width: 180px;
+	}
+
+	.input {
+		padding: 14px 16px;
+		font-size: 16px; /* предотвращает зум на iOS */
+	}
+
+	.submitButton {
+		padding: 14px 16px;
+		font-size: 16px;
+	}
+
+	.label {
+		font-size: 15px;
+	}
+}
+
+@media (max-width: 480px) {
+	.loginWrapper {
+		padding: 8px;
+		padding-top: 20px;
+	}
+
+	.loginCard {
+		padding: 24px 20px;
+		border-radius: 16px;
+		gap: 0; /* убираем gap так как робота нет */
+	}
+
+	.title {
+		font-size: 24px;
+		letter-spacing: 0.5px;
+	}
+
+	.robotContainer {
+		display: none; /* скрываем робота на маленьких экранах */
+	}
+
+	.content {
+		order: 1; /* возвращаем контент в нормальный порядок */
+	}
+
+	.form {
+		gap: 14px;
+	}
+
+	.inputGroup {
+		gap: 6px;
+	}
+}
+
+/* Улучшения для очень маленьких экранов */
+@media (max-width: 360px) {
+	.loginCard {
+		padding: 20px 16px;
+	}
+
+	.title {
+		font-size: 22px;
+	}
+
+	.robotContainer {
+		display: none; /* скрываем и на самых маленьких экранах */
+	}
 }
