@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import styles from './styles.module.css';
+import styles from './styles.module.scss';
 import { ModalOverlay } from '../modal-overlay/modal-overlay';
 
 export const CometLoader = () => {
@@ -31,12 +31,12 @@ export const CometLoader = () => {
 						animate={{
 							x,
 							y,
-							rotate: angle + 90 // Поворачиваем комету по направлению движения
+							rotate: angle + 90, // Поворачиваем комету по направлению движения
 						}}
 						transition={{
 							ease: 'linear',
 							duration: 0.02,
-							rotate: { duration: 0.02 }
+							rotate: { duration: 0.02 },
 						}}
 					/>
 				</div>
@@ -50,8 +50,8 @@ export const CometLoader = () => {
 					</>
 				) : (
 					<p className={styles['joke-text']}>
-						Упс, что-то пошло не так, но мы исправим!
-						Ваше мнение для нас очень важно 💙
+						Упс, что-то пошло не так, но мы исправим! Ваше мнение для нас очень
+						важно 💙
 					</p>
 				)}
 			</section>

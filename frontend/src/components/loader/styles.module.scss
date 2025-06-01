@@ -8,10 +8,9 @@
 	background: linear-gradient(135deg, #3B68FF, #5A7CFF);
 	border-radius: 50%;
 	padding: 3px;
-	box-shadow:
-		0 10px 30px rgba(59, 104, 255, 0.3),
-		0 0 0 8px rgba(59, 104, 255, 0.1),
-		inset 0 0 20px rgba(255, 255, 255, 0.1);
+	box-shadow: 0 10px 30px rgba(59, 104, 255, 0.3),
+	0 0 0 8px rgba(59, 104, 255, 0.1),
+	inset 0 0 20px rgba(255, 255, 255, 0.1);
 	position: relative;
 	overflow: hidden;
 }
@@ -53,12 +52,10 @@
 	border-radius: 50%;
 	position: absolute;
 	z-index: 2;
-	box-shadow:
-		0 0 20px rgba(255, 255, 255, 0.8),
-		0 0 40px rgba(255, 255, 255, 0.4),
-		0 0 60px rgba(59, 104, 255, 0.3);
+	box-shadow: 0 0 20px rgba(255, 255, 255, 0.8),
+	0 0 40px rgba(255, 255, 255, 0.4),
+	0 0 60px rgba(59, 104, 255, 0.3);
 
-	/* Добавляем хвост кометы */
 	&::before {
 		content: '';
 		position: absolute;
@@ -78,6 +75,7 @@
 	}
 
 	/* Дополнительный эффект свечения */
+
 	&::after {
 		content: '';
 		position: absolute;
@@ -107,9 +105,8 @@
 	justify-content: center;
 	border-radius: 24px;
 	flex-direction: column;
-	box-shadow:
-		0 20px 60px rgba(59, 104, 255, 0.15),
-		0 8px 32px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 20px 60px rgba(59, 104, 255, 0.15),
+	0 8px 32px rgba(0, 0, 0, 0.1);
 	gap: 24px;
 	position: relative;
 	overflow: hidden;
@@ -122,9 +119,8 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-image:
-		linear-gradient(45deg, rgba(59, 104, 255, 0.05) 1px, transparent 1px),
-		linear-gradient(-45deg, rgba(59, 104, 255, 0.05) 1px, transparent 1px);
+	background-image: linear-gradient(45deg, rgba(59, 104, 255, 0.05) 1px, transparent 1px),
+	linear-gradient(-45deg, rgba(59, 104, 255, 0.05) 1px, transparent 1px);
 	background-size: 30px 30px;
 	z-index: 0;
 }

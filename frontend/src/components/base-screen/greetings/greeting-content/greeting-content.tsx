@@ -1,13 +1,13 @@
 // DevelopmentBanner.jsx
-import { RefObject } from 'react';
 import styles from './styles.module.css';
+import { useNavigate } from 'react-router-dom';
 
-type TProps = {
-	formScrollRef?: RefObject<HTMLDivElement>;
-};
-export const GreetingContent = ({ formScrollRef }: TProps) => {
+export const GreetingContent = () => {
+	const navigate = useNavigate();
+
 	const onNavigate = () => {
-		formScrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+		// Меняем hash без перезагрузки
+		navigate('#form', { replace: false });
 	};
 
 	return (
