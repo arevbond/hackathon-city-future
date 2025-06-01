@@ -10,14 +10,15 @@ export const CometLoader = () => {
 	const onclick = () => {
 		setJoke(true);
 	};
+
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setAngle((prev) => (prev + 5) % 360);
-		}, 30);
+			setAngle((prev) => (prev + 3) % 360); // Немного замедлили для плавности
+		}, 20);
 		return () => clearInterval(interval);
 	}, []);
 
-	const radius = 40;
+	const radius = 42; // Увеличили радиус для большего круга
 	const x = radius * Math.cos((angle * Math.PI) / 180);
 	const y = radius * Math.sin((angle * Math.PI) / 180);
 
@@ -27,20 +28,30 @@ export const CometLoader = () => {
 				<div className={styles['loader-container']}>
 					<motion.div
 						className={styles.comet}
-						animate={{ x, y }}
-						transition={{ ease: 'linear', duration: 0.03 }}></motion.div>
+						animate={{
+							x,
+							y,
+							rotate: angle + 90 // Поворачиваем комету по направлению движения
+						}}
+						transition={{
+							ease: 'linear',
+							duration: 0.02,
+							rotate: { duration: 0.02 }
+						}}
+					/>
 				</div>
+
 				{!isJoke ? (
 					<>
-						<p className='text text_type_main-small mt-1'>
-							Пока идёт загрузка можете оставить отзыв:
+						<p className={styles['loader-text']}>
+							Пока идёт загрузка, можете оставить отзыв:
 						</p>
-						<p className={styles.input} onClick={onclick}></p>
+						<div className={styles.input} onClick={onclick} />
 					</>
 				) : (
-					<p className='text text_type_main-small mt-2'>
-						Упс что-то пошло не так, но мы исправим, ваше мнение для нас очень
-						важно
+					<p className={styles['joke-text']}>
+						Упс, что-то пошло не так, но мы исправим!
+						Ваше мнение для нас очень важно 💙
 					</p>
 				)}
 			</section>
