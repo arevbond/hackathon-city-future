@@ -38,9 +38,9 @@
 ## 📚 Документация и ресурсы
 
 ### Дизайн и архитектура
-- **[Excalidraw диаграмма](https://excalidraw.com/#json=GsjVGws9bCNiUD0ueCLtb,GV1YvhQb3dQs3_oAvf_1_w)** - схема архитектуры
 - **[Схема базы данных](https://drawsql.app/teams/hestia/diagrams/hackathon)** - структура БД
-- **[Figma макеты](https://www.figma.com/team_invite/redeem/onXYqZwSzDxexMpkuXgNik)** - UI/UX дизайн
+- **[Figma макеты](https://www.figma.com/design/Tl276scJZDawc9FndyJj6J/git-commit--m-%225cups%22_%D0%A5%D0%90%D0%9A%D0%90%D0%A2%D0%9E%D0%9D-2025?node-id=0-1&t=Q8rZcXJjDx81rw8W-1)** - UI/UX дизайн
+- **[Excalidraw диаграмма](https://excalidraw.com/#json=GsjVGws9bCNiUD0ueCLtb,GV1YvhQb3dQs3_oAvf_1_w)** - схема архитектуры
 
 ### API документация
 - **[Swagger спецификация](backend/docs/swagger.yaml)** - OpenAPI документация
