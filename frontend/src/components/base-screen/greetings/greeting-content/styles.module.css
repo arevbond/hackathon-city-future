@@ -1,9 +1,14 @@
-/* DevelopmentBanner.module.css */
-
+.container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin: 20px 0;
+}
 
 .bannerContent {
 	max-width: 800px;
 	padding: 0 20px;
+	text-align: center;
 }
 
 .mainTitle {
@@ -23,8 +28,9 @@
 .description {
 	font-size: 1.25rem;
 	color: #374151;
-	line-height: 1.2;
+	line-height: 1.6;
 	margin-bottom: 2rem;
+	text-align: center;
 }
 
 .description p {
@@ -60,32 +66,64 @@
 	transform: translateY(0);
 }
 
-/* Адаптивность */
+/* Адаптивность для greeting-content */
 @media (max-width: 768px) {
+	.bannerContent {
+		padding: 0 15px;
+	}
+
 	.mainTitle {
 		font-size: 2.5rem;
+		margin-bottom: 1.5rem;
 	}
 
 	.description {
 		font-size: 1.125rem;
+		margin-bottom: 1.5rem;
+		text-align: left;
 	}
 
 	.ctaButton {
 		font-size: 1rem;
 		padding: 14px 28px;
+		width: 100%;
+		max-width: 300px;
+		text-align: center;
 	}
 }
 
 @media (max-width: 480px) {
+	.bannerContent {
+		padding: 0 10px;
+	}
+
 	.mainTitle {
 		font-size: 2rem;
+		line-height: 1.2;
 	}
 
 	.description {
 		font-size: 1rem;
+		line-height: 1.5;
 	}
 
 	.ctaButton {
 		padding: 12px 24px;
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 360px) {
+	.mainTitle {
+		font-size: 1.75rem;
+	}
+
+	.description {
+		font-size: 0.9rem;
+	}
+
+	.ctaButton {
+		padding: 10px 20px;
+		font-size: 0.85rem;
 	}
 }
