@@ -19,23 +19,23 @@ export const Cards = () => {
 				НЕ АГЕНТЫ ИИ, А АГЕНТЫ ДЕЛА.
 			</h1>
 
+
 			<img
 				src={arrow}
 				alt="arrow"
 				className={styles.arrow}
 			/>
-
+			<img
+				src={card2}
+				alt="card 2"
+				className={styles.card2}
+			/>
 			<img
 				src={card1}
 				alt="card 1"
 				className={styles.card1}
 			/>
 
-			<img
-				src={card2}
-				alt="card 2"
-				className={styles.card2}
-			/>
 
 			<img
 				src={card3}
