@@ -5,8 +5,9 @@ import { pathPages } from '@utils/page-paths';
 import { Page404 } from './error404-page/erro404-page';
 
 import { Home } from './home/home';
-import {Login} from "./login/login";
-import {Report} from "./report/report";
+import { Login } from './login/login';
+import { Report } from './report/report';
+import { ClientForm } from './client-form/client-form';
 
 export const Pages = () => {
 	const location = useLocation();
@@ -19,6 +20,7 @@ export const Pages = () => {
 				<Route path={pathPages.home} element={<Home />} />
 				<Route path={pathPages.login} element={<Login />} />
 				<Route path={pathPages.repeat} element={<Report />} />
+				<Route path={pathPages.clientForm} element={<ClientForm />} />
 				<Route path='*' element={<Page404 />} />
 			</Routes>
 		</>

@@ -11,4 +11,5 @@ export const pathPages = {
 	resetPassword: '/reset-password',
 	ingredients: '/ingredients',
 	repeat: 'report',
+	clientForm: 'application',
 } as const;

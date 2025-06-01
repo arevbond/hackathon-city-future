@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.module.css'; // Создайте этот файл для стилей
+import './styles.module.css';
 
 type InputProps = {
 	label?: string;
