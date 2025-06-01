@@ -1,0 +1,310 @@
+{
+  "info": {
+    "name": "hackthon",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "event": [],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8888/login",
+          "host": [
+            "localhost"
+          ],
+          "path": [],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"tech@mail.ru\",\n  \"password\": \"password\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "Ping",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8888/ping",
+          "host": [
+            "localhost"
+          ],
+          "path": [],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "bruno",
+      "event": []
+    },
+    {
+      "name": "Requests",
+      "item": [
+        {
+          "name": "All Requests",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI2NTcsImlhdCI6MTc0ODc1NjI1Nywicm9sZSI6ImNsaWVudCIsInN1YiI6Mn0.HTI0vdGB1rg7k-3MCdOHIsqEQUcM2yVsQ74pebx13WE",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/requests?status=new",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "new"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Assign Tech",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI5ODQsImlhdCI6MTc0ODc1NjU4NCwicm9sZSI6InRlY2giLCJzdWIiOjF9.9MeF-LYypAPBo3tlg9X23WlAhKEIZDgRsAitGP4EMkc",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/requests/1/assign-tech",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tech_user_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Request",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8888/requests",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "  {\n    \"client_name\": \"Mike\",\n    \"client_email\": \"mike@example.com\",\n    \"title\": \"Разработка CRM\",\n    \"description\": \"Нужно asdfdasfadsfsadfsadff CRM систему для отдела продаж.\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Request By ID",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI5ODQsImlhdCI6MTc0ODc1NjU4NCwicm9sZSI6InRlY2giLCJzdWIiOjF9.9MeF-LYypAPBo3tlg9X23WlAhKEIZDgRsAitGP4EMkc",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/request/1",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "Update Request Status",
+          "event": [],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI5ODQsImlhdCI6MTc0ODc1NjU4NCwicm9sZSI6InRlY2giLCJzdWIiOjF9.9MeF-LYypAPBo3tlg9X23WlAhKEIZDgRsAitGP4EMkc",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/requests/1/status",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\",\n  \"public_note\": \"Взято в работу\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tech Reports",
+      "item": [
+        {
+          "name": "Create Comment",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI2NTcsImlhdCI6MTc0ODc1NjI1Nywicm9sZSI6ImNsaWVudCIsInN1YiI6Mn0.HTI0vdGB1rg7k-3MCdOHIsqEQUcM2yVsQ74pebx13WE",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/comments",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"bla-bla-bla\",\n  \"report_id\": 1,\n  \"user_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Create Tech Report",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI5ODQsImlhdCI6MTc0ODc1NjU4NCwicm9sZSI6InRlY2giLCJzdWIiOjF9.9MeF-LYypAPBo3tlg9X23WlAhKEIZDgRsAitGP4EMkc",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/tech-reports",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "  {\n    \"request_id\": 1,\n    \"tech_user_id\": 1,\n    \"report\": \"Оценка сроков: 3 месяца...........\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Get Reports With Comments",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI2NTcsImlhdCI6MTc0ODc1NjI1Nywicm9sZSI6ImNsaWVudCIsInN1YiI6Mn0.HTI0vdGB1rg7k-3MCdOHIsqEQUcM2yVsQ74pebx13WE",
+                "disabled": false,
+                "type": "default"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8888/tech-reports",
+              "host": [
+                "localhost"
+              ],
+              "path": [],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"request_id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": []
+}
