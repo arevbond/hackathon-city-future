@@ -62,7 +62,7 @@
             "header": [
               {
                 "key": "Authorization",
-                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg4NDI2NTcsImlhdCI6MTc0ODc1NjI1Nywicm9sZSI6ImNsaWVudCIsInN1YiI6Mn0.HTI0vdGB1rg7k-3MCdOHIsqEQUcM2yVsQ74pebx13WE",
+                "value": "Bearer ***",
                 "disabled": false,
                 "type": "default"
               }
