@@ -3,13 +3,10 @@ export const pathPages = {
 	product: '/product',
 	advantages: '/advantages',
 	personalAccount: '/profile',
-	profileOrders: 'orders',
-	profileExit: 'exit',
+
 	login: '/login',
 	register: '/register',
-	forgotPassword: '/forgot-password',
-	resetPassword: '/reset-password',
-	ingredients: '/ingredients',
+
 	repeat: 'report',
-	clientForm: 'application',
+	clientForm: '/application',
 } as const;

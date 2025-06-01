@@ -3,6 +3,8 @@ import { Button } from '../../../ui/button/button';
 import { Input } from '../../../ui/input/input';
 
 import styles from './styles.module.css';
+import { useNavigate } from 'react-router-dom';
+import { pathPages } from '@utils/page-paths';
 
 export const Form = () => {
 	const [form, onChange, setFormValue] = useForm({
@@ -12,13 +14,15 @@ export const Form = () => {
 		check: false,
 	});
 
+	const navigate = useNavigate();
+
 	const onLoginClick = () => {
 		console.log('JOB');
 	};
 
 	const onRegisterClick = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		navigate(pathPages.clientForm, { replace: true });
 		console.log(form);
 	};
 
