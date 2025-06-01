@@ -2,17 +2,17 @@ import arrow from "./arrow_in_target.png";
 import card1 from "./card_1.svg";
 import card2 from "./card_2.svg";
 import card3 from "./card_3.svg";
-import zadnik from "./zadnik.png";
+// import zadnik from "./zadnik.png";
 import styles from "./style.module.css";
 
 export const Cards = () => {
 	return (
 		<div className={styles.container}>
-			<img
-				src={zadnik}
-				alt="grid background"
-				className={styles.zadnik}
-			/>
+			{/*<img*/}
+			{/*	src={zadnik}*/}
+			{/*	alt="grid background"*/}
+			{/*	className={styles.zadnik}*/}
+			{/*/>*/}
 
 			<h1 className={styles.title}>
 				МЫ — <span className={styles.zalupa}>Ping</span>Dev.<br />
