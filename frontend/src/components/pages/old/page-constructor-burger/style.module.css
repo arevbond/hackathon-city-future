@@ -1,8 +1,0 @@
-.container-main {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 40px;
-	height: calc(100vh - 150px);
-
-	/* display: flex; */
-}
