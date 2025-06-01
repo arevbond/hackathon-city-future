@@ -1,3 +1,5 @@
+/* style.module.css */
+
 .container {
 	position: relative;
 	width: 100%;
@@ -70,4 +72,127 @@
 	height: 363px;
 	transform: rotate(5deg);
 	z-index: 1;
+}
+
+/* Адаптивность для планшетов */
+@media (max-width: 1200px) {
+	.title {
+		left: 60px;
+		font-size: 42px;
+		max-width: calc(100vw - 120px);
+	}
+
+	.zalupa {
+		font-size: 44px;
+	}
+
+	.arrow {
+		left: 800px;
+		width: 300px;
+		height: 300px;
+	}
+
+	.card1 {
+		left: 100px;
+		width: 300px;
+		height: 290px;
+	}
+
+	.card2 {
+		left: 350px;
+		width: 300px;
+		height: 290px;
+	}
+
+	.card3 {
+		left: 600px;
+		width: 300px;
+		height: 290px;
+	}
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+	.container {
+		padding: 20px;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: flex-start;
+	}
+
+	.title {
+		position: relative;
+		left: 0;
+		top: 40px;
+		font-size: 28px;
+		text-align: center;
+		max-width: 100%;
+		margin-bottom: 40px;
+		padding: 0 20px;
+	}
+
+	.zalupa {
+		font-size: 30px;
+	}
+
+	.arrow {
+		position: relative;
+		left: 0;
+		top: 0;
+		width: 150px;
+		height: 150px;
+		margin: 20px 0;
+		align-self: center;
+	}
+
+	.card1, .card2, .card3 {
+		position: relative;
+		left: 0;
+		top: 0;
+		width: 280px;
+		height: 270px;
+		margin: 15px 0;
+		align-self: center;
+	}
+
+	.card1 {
+		transform: rotate(-3deg);
+	}
+
+	.card2 {
+		transform: rotate(3deg);
+	}
+
+	.card3 {
+		transform: rotate(-2deg);
+	}
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+	.title {
+		font-size: 24px;
+		top: 20px;
+	}
+
+	.zalupa {
+		font-size: 26px;
+	}
+
+	.arrow {
+		width: 120px;
+		height: 120px;
+	}
+
+	.card1, .card2, .card3 {
+		width: 240px;
+		height: 230px;
+		margin: 10px 0;
+	}
+
+	.container {
+		padding: 15px;
+	}
 }
