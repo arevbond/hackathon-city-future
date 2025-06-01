@@ -8,12 +8,16 @@ import { useLocation } from 'react-router-dom';
 
 export const Greeting = () => {
 	const formRef = useRef<HTMLDivElement>(null);
-
 	const location = useLocation();
+
+	// Функция для скролла к форме
+	const scrollToForm = () => {
+		formRef.current?.scrollIntoView({ behavior: 'smooth' });
+	};
 
 	useEffect(() => {
 		if (location.hash === '#form') {
-			formRef.current?.scrollIntoView({ behavior: 'smooth' });
+			scrollToForm();
 		}
 	}, [location.hash]);
 
@@ -25,7 +29,7 @@ export const Greeting = () => {
 				</div>
 				<div className={styles.arrow}>
 					<Arrow />
-					<GreetingContent />
+					<GreetingContent onScrollToForm={scrollToForm} />
 				</div>
 				<GreetingForm ref={formRef} />
 			</section>

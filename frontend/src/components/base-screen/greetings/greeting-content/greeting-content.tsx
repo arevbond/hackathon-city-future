@@ -1,13 +1,20 @@
-// DevelopmentBanner.jsx
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 
-export const GreetingContent = () => {
+interface GreetingContentProps {
+	onScrollToForm: () => void;
+}
+
+export const GreetingContent = ({ onScrollToForm }: GreetingContentProps) => {
 	const navigate = useNavigate();
 
-	const onNavigate = () => {
-		// Меняем hash без перезагрузки
+	const handleButtonClick = () => {
+		// Сначала меняем URL с хешем
 		navigate('#form', { replace: false });
+		// Затем скроллим (небольшая задержка для обновления URL)
+		setTimeout(() => {
+			onScrollToForm();
+		}, 50);
 	};
 
 	return (
@@ -27,8 +34,8 @@ export const GreetingContent = () => {
 					Мы оцениваем сроки, подбираем стек и собираем команду под ваш темп.
 				</div>
 
-				{/* NavLink кнопка to='/project' */}
-				<button onClick={onNavigate} className={styles.ctaButton}>
+				{/* Кнопка */}
+				<button onClick={handleButtonClick} className={styles.ctaButton}>
 					запинговать проект
 				</button>
 			</div>

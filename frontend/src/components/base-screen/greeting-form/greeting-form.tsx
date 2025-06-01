@@ -7,7 +7,7 @@ import { forwardRef } from 'react';
 // eslint-disable-next-line react/display-name
 export const GreetingForm = forwardRef<HTMLDivElement>((_, ref) => {
 	return (
-		<div className={styles.greetform} ref={ref}>
+		<div className={styles.greetform} ref={ref} data-form-section>
 			<p className={styles.title}>
 				<span className={styles.pixel}>краткий пинг</span> - и мы в деле!
 			</p>

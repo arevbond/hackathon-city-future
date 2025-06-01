@@ -1,8 +1,15 @@
 import styles from './style.module.css';
 import review_1 from "./review_1.svg"
-import review_2 from "./review_2.svg"
 import review_3 from "./review_3.svg"
+import review_2 from "./review_2.svg"
 import review_4 from "./review_4.svg"
+
+const handleScrollToForm = () => {
+	const formElement = document.querySelector('[data-form-section]');
+	if (formElement) {
+		formElement.scrollIntoView({ behavior: 'smooth' });
+	}
+};
 
 export const Reviews = () => {
 	return (
@@ -26,18 +33,19 @@ export const Reviews = () => {
 						/>
 					</div>
 
+
 					<div className={styles.reviewCard}>
 						<img
-							src={review_2}
-							alt="Отзыв с роботом"
+							src={review_3}
+							alt="Отзыв Марии Пучковой"
 							className={styles.reviewImage}
 						/>
 					</div>
 
 					<div className={styles.reviewCard}>
 						<img
-							src={review_3}
-							alt="Отзыв Марии Пучковой"
+							src={review_2}
+							alt="Отзыв с роботом"
 							className={styles.reviewImage}
 						/>
 					</div>
@@ -52,7 +60,10 @@ export const Reviews = () => {
 				</div>
 
 				<div className={styles.buttonWrapper}>
-					<button className={styles.submitButton}>
+					<button
+						className={styles.submitButton}
+						onClick={handleScrollToForm}
+					>
 						Запилить проект
 					</button>
 				</div>
