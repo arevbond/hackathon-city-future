@@ -21,16 +21,18 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /login", s.login)
 
 	// requests
+	// бриф клиента доступная любому пользователю приложения
 	mux.HandleFunc("POST /requests", s.createRequest)
-	mux.HandleFunc("GET /requests", s.allRequests)
-	mux.HandleFunc("GET /request/{id}", s.requestByID)
-	mux.HandleFunc("PUT /requests/{id}/assign-tech", s.assignTechToRequest)
-	mux.HandleFunc("PATCH /requests/{id}/status", s.updateStatusRequest)
+	// обработчики, которые доступны только в личном кабинете менеджера
+	mux.Handle("GET /requests", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.allRequests))))
+	mux.Handle("GET /request/{id}", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.requestByID))))
+	mux.Handle("PUT /requests/{id}/assign-tech", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.assignTechToRequest))))
+	mux.Handle("PATCH /requests/{id}/status", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.updateStatusRequest))))
 
 	// tech-reports
-	mux.HandleFunc("POST /tech-reports", s.createTechReport)
-	mux.HandleFunc("POST /comments", s.createComment)
-	mux.HandleFunc("GET /tech-reports", s.getTechReportWithComment)
+	mux.Handle("POST /comments", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech, UserClient)(http.HandlerFunc(s.createComment))))
+	mux.Handle("GET /tech-reports", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech, UserClient)(http.HandlerFunc(s.getTechReportWithComment))))
+	mux.Handle("POST /tech-reports", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.createTechReport))))
 
 	return mux
 }
@@ -176,6 +178,8 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	user, err := s.db.User(r.Context(), input.Email)
 	if errors.Is(err, sql.ErrNoRows) {
 		s.unauthorizedResponse(w, r)
+
+		return
 	} else if err != nil {
 		s.serverErrorResponse(w, r, err)
 
