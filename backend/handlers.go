@@ -153,7 +153,7 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 
 // login godoc
 // @Summary      Авторизация пользователя
-// @Description  Проверяет email и пароль пользователя, возвращает JWT и данные пользователя
+// @Description  Проверяет email и пароль пользователя, возвращает токен доступа и токен обновления в cookie
 // @Tags         auth
 // @Accept       json
 // @Produce      json
@@ -192,14 +192,31 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := s.GenerateJWT(user.ID, string(user.Role))
+	accessToken, err := s.GenerateAccessToken(user.ID)
 	if err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
+	refreshToken, err := s.GenerateRefreshToken(user.ID)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refreshToken",
+		Value:    refreshToken,
+		Path:     "/",                  // Применяется ко всем роутам.
+		HttpOnly: true,                 // Не читается при помощи JS.
+		Secure:   true,                 // Работает только с HTTPS.
+		SameSite: http.SameSiteLaxMode, // Отправляется только для того же домена.
+		MaxAge:   7 * 24 * 60 * 60,     // Действует 7 дней.
+	})
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"access_token": accessToken}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return

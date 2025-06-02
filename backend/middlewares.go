@@ -30,7 +30,13 @@ func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
 		}
 
 		tokenString := parts[1]
-		userID, role, err := s.ParseJWT(tokenString)
+		userID, err := s.ParseJWT(tokenString)
+		if err != nil {
+			s.unauthorizedResponse(w, r)
+			return
+		}
+
+		user, err := s.db.UserById(r.Context(), userID)
 		if err != nil {
 			s.unauthorizedResponse(w, r)
 			return
@@ -38,7 +44,7 @@ func (s *Server) AuthMiddleware(next http.Handler) http.Handler {
 
 		// Кладём userID и роль в контекст
 		ctx := context.WithValue(r.Context(), contextKeyUserID, userID)
-		ctx = context.WithValue(ctx, contextKeyRole, role)
+		ctx = context.WithValue(ctx, contextKeyRole, user.Role)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})

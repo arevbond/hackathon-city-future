@@ -37,8 +37,7 @@ type LoginRequest struct {
 
 // LoginResponse описывает структуру ответа после успешной авторизации
 type LoginResponse struct {
-	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
-	User  User   `json:"user"`
+	Token string `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
 }
 
 // AssignTechRequest представляет запрос на назначение технического специалиста
