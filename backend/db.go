@@ -99,18 +99,26 @@ func (s *Storage) Request(ctx context.Context, id int) (*Request, error) {
 	return &request, nil
 }
 
-func (s *Storage) User(ctx context.Context, email string) (*User, error) {
+func (s *Storage) UserByCriteria(ctx context.Context, criteria string, value any) (*User, error) {
 	query := `SELECT id, name, role, email, hash_password
 				FROM users
-				WHERE email = $1;`
+				WHERE $1 = $2;`
 
 	var user User
 
-	if err := s.db.GetContext(ctx, &user, query, email); err != nil {
+	if err := s.db.GetContext(ctx, &user, query, criteria, value); err != nil {
 		return nil, fmt.Errorf("can't get user from db: %w", err)
 	}
 
 	return &user, nil
+}
+
+func (s *Storage) UserByEmail(ctx context.Context, email string) (*User, error) {
+	return s.UserByCriteria(ctx, "email", email)
+}
+
+func (s *Storage) UserById(ctx context.Context, id int) (*User, error) {
+	return s.UserByCriteria(ctx, "id", id)
 }
 
 func (s *Storage) AssignTechToRequest(ctx context.Context, requestID int, techID int) error {

@@ -175,7 +175,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.db.User(r.Context(), input.Email)
+	user, err := s.db.UserByEmail(r.Context(), input.Email)
 	if errors.Is(err, sql.ErrNoRows) {
 		s.unauthorizedResponse(w, r)
 
