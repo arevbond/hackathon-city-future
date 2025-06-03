@@ -8,6 +8,7 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func (s *Server) routes() *http.ServeMux {
@@ -19,6 +20,7 @@ func (s *Server) routes() *http.ServeMux {
 
 	// auth
 	mux.HandleFunc("POST /login", s.login)
+	mux.HandleFunc("DELETE /logout", s.logout)
 
 	// requests
 	// бриф клиента доступная любому пользователю приложения
@@ -217,6 +219,30 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err = s.writeJSON(w, http.StatusOK, envelope{"access_token": accessToken}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+// logout godoc
+// @Summary      Авторизация пользователя
+// @Description  Сбрасывает токен обновления в cookie
+// @Tags         auth
+// @Success      200
+// @Router       /logout [delete]
+func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refreshToken",
+		Value:    "invalidate",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		Expires:  time.Unix(0, 0),
+		MaxAge:   -1,
+	})
+
+	if err := s.writeJSON(w, http.StatusOK, nil, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
