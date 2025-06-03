@@ -100,13 +100,13 @@ func (s *Storage) Request(ctx context.Context, id int) (*Request, error) {
 }
 
 func (s *Storage) UserByCriteria(ctx context.Context, criteria string, value any) (*User, error) {
-	query := `SELECT id, name, role, email, hash_password
+	query := fmt.Sprintf(`SELECT id, name, role, email, hash_password
 				FROM users
-				WHERE $1 = $2;`
+				WHERE %s = $1;`, criteria)
 
 	var user User
 
-	if err := s.db.GetContext(ctx, &user, query, criteria, value); err != nil {
+	if err := s.db.GetContext(ctx, &user, query, value); err != nil {
 		return nil, fmt.Errorf("can't get user from db: %w", err)
 	}
 
