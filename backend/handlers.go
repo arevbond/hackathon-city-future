@@ -211,15 +211,8 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.SetCookie(w, &http.Cookie{
-		Name:     "refreshToken",
-		Value:    refreshToken,
-		Path:     "/",                  // Применяется ко всем роутам.
-		HttpOnly: true,                 // Не читается при помощи JS.
-		Secure:   true,                 // Работает только с HTTPS.
-		SameSite: http.SameSiteLaxMode, // Отправляется только для того же домена.
-		MaxAge:   7 * 24 * 60 * 60,     // Действует 7 дней.
-	})
+	cookie := s.GenerateRefreshTokenCookie(refreshToken)
+	http.SetCookie(w, &cookie)
 
 	if err = s.writeJSON(w, http.StatusOK, envelope{"access_token": accessToken}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 	"time"
 )
 
@@ -41,6 +42,18 @@ func (s *Server) GenerateAccessToken(userID int) (string, error) {
 
 func (s *Server) GenerateRefreshToken(userID int) (string, error) {
 	return s.GenerateJWT(userID, 7*24*time.Hour)
+}
+
+func (s *Server) GenerateRefreshTokenCookie(refreshToken string) http.Cookie {
+	return http.Cookie{
+		Name:     "refreshToken",
+		Value:    refreshToken,
+		Path:     "/",                  // Применяется ко всем роутам.
+		HttpOnly: true,                 // Не читается при помощи JS.
+		Secure:   true,                 // Работает только с HTTPS.
+		SameSite: http.SameSiteLaxMode, // Отправляется только для того же домена.
+		MaxAge:   7 * 24 * 60 * 60,     // Действует 7 дней.
+	}
 }
 
 // ParseJWT парсит и валидирует JWT-токен.
