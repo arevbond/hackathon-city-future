@@ -40,6 +40,11 @@ type LoginResponse struct {
 	Token string `json:"access_token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
 }
 
+// UserResponse описывает структуру ответа получения данных пользователя
+type UserResponse struct {
+	User User `json:"user"`
+}
+
 // AssignTechRequest представляет запрос на назначение технического специалиста
 type AssignTechRequest struct {
 	TechUserID int `json:"tech_user_id" example:"123"`

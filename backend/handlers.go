@@ -22,6 +22,9 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /auth/login", s.login)
 	mux.HandleFunc("DELETE /auth/logout", s.logout)
 
+	// users
+	mux.Handle("GET /users/me", s.AuthMiddleware(http.HandlerFunc(s.usersMe)))
+
 	// requests
 	// бриф клиента доступная любому пользователю приложения
 	mux.HandleFunc("POST /requests", s.createRequest)
@@ -243,6 +246,31 @@ func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
 	})
 
 	if err := s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+// usersMe godoc
+// @Summary      Получение данных текущего пользователя
+// @Description  Получение данных текущего пользователя
+// @Tags         users
+// @Produce      json
+// @Success      200          {object}  UserResponse
+// @Failure      404          {object}  map[string]string
+// @Failure      500     			{object}  map[string]string
+// @Router       /users/me [get]
+func (s *Server) usersMe(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value(contextKeyUserID).(int)
+
+	user, err := s.db.UserById(r.Context(), userID)
+	if err != nil {
+		s.userNotFoundResponse(w, r)
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, user, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
