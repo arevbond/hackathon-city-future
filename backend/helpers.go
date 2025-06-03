@@ -108,6 +108,11 @@ func (s *Server) unauthorizedResponse(w http.ResponseWriter, r *http.Request) {
 	s.errorResponse(w, r, http.StatusUnauthorized, message)
 }
 
+func (s *Server) userNotFoundResponse(w http.ResponseWriter, r *http.Request) {
+	message := "user not found"
+	s.errorResponse(w, r, http.StatusNotFound, message)
+}
+
 func (s *Server) forbiddenResponse(w http.ResponseWriter, r *http.Request) {
 	s.errorResponse(w, r, http.StatusForbidden, "you do not have permission to access this resource")
 }

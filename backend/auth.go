@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+	"net/http"
 	"time"
 )
 
@@ -18,12 +19,11 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func (s *Server) GenerateJWT(userID int, role string) (string, error) {
+func (s *Server) GenerateJWT(userID int, duration time.Duration) (string, error) {
 	claims := jwt.MapClaims{
-		"sub":  userID, // subject = user ID
-		"role": role,
-		"exp":  time.Now().Add(24 * time.Hour).Unix(), // expires after 24 hours
-		"iat":  time.Now().Unix(),                     // issued at
+		"sub": userID, // subject = user ID
+		"exp": time.Now().Add(duration).Unix(),
+		"iat": time.Now().Unix(), // issued at
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -36,8 +36,28 @@ func (s *Server) GenerateJWT(userID int, role string) (string, error) {
 	return tokenString, nil
 }
 
+func (s *Server) GenerateAccessToken(userID int) (string, error) {
+	return s.GenerateJWT(userID, 15*time.Minute)
+}
+
+func (s *Server) GenerateRefreshToken(userID int) (string, error) {
+	return s.GenerateJWT(userID, 7*24*time.Hour)
+}
+
+func (s *Server) GenerateRefreshTokenCookie(refreshToken string) http.Cookie {
+	return http.Cookie{
+		Name:     "refreshToken",
+		Value:    refreshToken,
+		Path:     "/",                  // Применяется ко всем роутам.
+		HttpOnly: true,                 // Не читается при помощи JS.
+		Secure:   true,                 // Работает только с HTTPS.
+		SameSite: http.SameSiteLaxMode, // Отправляется только для того же домена.
+		MaxAge:   7 * 24 * 60 * 60,     // Действует 7 дней.
+	}
+}
+
 // ParseJWT парсит и валидирует JWT-токен.
-func (s *Server) ParseJWT(tokenString string) (int, UserRole, error) {
+func (s *Server) ParseJWT(tokenString string) (int, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		// Проверяем метод подписи
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -47,26 +67,20 @@ func (s *Server) ParseJWT(tokenString string) (int, UserRole, error) {
 	})
 
 	if err != nil {
-		return 0, "", err
+		return 0, err
 	}
 
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		return 0, "", errors.New("invalid token")
+		return 0, errors.New("invalid token")
 	}
 
 	// Извлекаем userID
 	userIDFloat, ok := claims["sub"].(float64)
 	if !ok {
-		return 0, "", errors.New("invalid token: sub claim missing or invalid")
+		return 0, errors.New("invalid token: sub claim missing or invalid")
 	}
 	userID := int(userIDFloat)
 
-	// Извлекаем role
-	role, ok := claims["role"].(string)
-	if !ok {
-		return 0, "", errors.New("invalid token: role claim missing or invalid")
-	}
-
-	return userID, UserRole(role), nil
+	return userID, nil
 }

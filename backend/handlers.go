@@ -8,6 +8,7 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func (s *Server) routes() *http.ServeMux {
@@ -18,14 +19,18 @@ func (s *Server) routes() *http.ServeMux {
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	// auth
-	mux.HandleFunc("POST /login", s.login)
+	mux.HandleFunc("POST /auth/login", s.login)
+	mux.HandleFunc("DELETE /auth/logout", s.logout)
+
+	// users
+	mux.Handle("GET /users/me", s.AuthMiddleware(http.HandlerFunc(s.usersMe)))
 
 	// requests
 	// бриф клиента доступная любому пользователю приложения
 	mux.HandleFunc("POST /requests", s.createRequest)
 	// обработчики, которые доступны только в личном кабинете менеджера
 	mux.Handle("GET /requests", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.allRequests))))
-	mux.Handle("GET /request/{id}", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.requestByID))))
+	mux.Handle("GET /requests/{id}", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.requestByID))))
 	mux.Handle("PUT /requests/{id}/assign-tech", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.assignTechToRequest))))
 	mux.Handle("PATCH /requests/{id}/status", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.updateStatusRequest))))
 
@@ -130,7 +135,7 @@ func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  RequestResponse
 // @Failure      400  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
-// @Router       /request/{id} [get]
+// @Router       /requests/{id} [get]
 func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 
@@ -153,7 +158,7 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 
 // login godoc
 // @Summary      Авторизация пользователя
-// @Description  Проверяет email и пароль пользователя, возвращает JWT и данные пользователя
+// @Description  Проверяет email и пароль пользователя, возвращает токен доступа и токен обновления в cookie
 // @Tags         auth
 // @Accept       json
 // @Produce      json
@@ -162,7 +167,7 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 // @Failure      400          {object}  map[string]string
 // @Failure      401          {object}  map[string]string
 // @Failure      500          {object}  map[string]string
-// @Router       /login [post]
+// @Router       /auth/login [post]
 func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email    string `json:"email"`
@@ -175,7 +180,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := s.db.User(r.Context(), input.Email)
+	user, err := s.db.UserByEmail(r.Context(), input.Email)
 	if errors.Is(err, sql.ErrNoRows) {
 		s.unauthorizedResponse(w, r)
 
@@ -192,14 +197,73 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := s.GenerateJWT(user.ID, string(user.Role))
+	accessToken, err := s.GenerateAccessToken(user.ID)
 	if err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
 	}
 
-	if err = s.writeJSON(w, http.StatusOK, envelope{"token": token, "user": user}, nil); err != nil {
+	refreshToken, err := s.GenerateRefreshToken(user.ID)
+	if err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+
+	cookie := s.GenerateRefreshTokenCookie(refreshToken)
+	http.SetCookie(w, &cookie)
+
+	if err = s.writeJSON(w, http.StatusOK, envelope{"access_token": accessToken}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+// logout godoc
+// @Summary      Авторизация пользователя
+// @Description  Сбрасывает токен обновления в cookie
+// @Tags         auth
+// @Success      200     {object}  SuccessResponse
+// @Router       /auth/logout [delete]
+func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "refreshToken",
+		Value:    "invalidate",
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   true,
+		Expires:  time.Unix(0, 0),
+		MaxAge:   -1,
+	})
+
+	if err := s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
+		s.serverErrorResponse(w, r, err)
+
+		return
+	}
+}
+
+// usersMe godoc
+// @Summary      Получение данных текущего пользователя
+// @Description  Получение данных текущего пользователя
+// @Tags         users
+// @Produce      json
+// @Success      200          {object}  UserResponse
+// @Failure      404          {object}  map[string]string
+// @Failure      500     			{object}  map[string]string
+// @Router       /users/me [get]
+func (s *Server) usersMe(w http.ResponseWriter, r *http.Request) {
+	userID := r.Context().Value(contextKeyUserID).(int)
+
+	user, err := s.db.UserById(r.Context(), userID)
+	if err != nil {
+		s.userNotFoundResponse(w, r)
+		return
+	}
+
+	if err = s.writeJSON(w, http.StatusOK, user, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return

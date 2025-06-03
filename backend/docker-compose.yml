@@ -14,7 +14,7 @@ services:
 
   db:
     container_name: "hack-db"
-    image: postgres:17
+    image: postgres:17-alpine
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${PG_PASSWORD}
