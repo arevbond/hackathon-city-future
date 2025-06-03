@@ -19,8 +19,8 @@ func (s *Server) routes() *http.ServeMux {
 	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	// auth
-	mux.HandleFunc("POST /login", s.login)
-	mux.HandleFunc("DELETE /logout", s.logout)
+	mux.HandleFunc("POST /auth/login", s.login)
+	mux.HandleFunc("DELETE /auth/logout", s.logout)
 
 	// requests
 	// бриф клиента доступная любому пользователю приложения
@@ -164,7 +164,7 @@ func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 // @Failure      400          {object}  map[string]string
 // @Failure      401          {object}  map[string]string
 // @Failure      500          {object}  map[string]string
-// @Router       /login [post]
+// @Router       /auth/login [post]
 func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 	var input struct {
 		Email    string `json:"email"`
@@ -230,7 +230,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 // @Description  Сбрасывает токен обновления в cookie
 // @Tags         auth
 // @Success      200
-// @Router       /logout [delete]
+// @Router       /auth/logout [delete]
 func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
 		Name:     "refreshToken",
