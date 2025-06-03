@@ -27,7 +27,7 @@ func (s *Server) routes() *http.ServeMux {
 	mux.HandleFunc("POST /requests", s.createRequest)
 	// обработчики, которые доступны только в личном кабинете менеджера
 	mux.Handle("GET /requests", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.allRequests))))
-	mux.Handle("GET /request/{id}", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.requestByID))))
+	mux.Handle("GET /requests/{id}", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.requestByID))))
 	mux.Handle("PUT /requests/{id}/assign-tech", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.assignTechToRequest))))
 	mux.Handle("PATCH /requests/{id}/status", s.AuthMiddleware(s.RoleMiddleware(UserManager, UserTech)(http.HandlerFunc(s.updateStatusRequest))))
 
@@ -132,7 +132,7 @@ func (s *Server) allRequests(w http.ResponseWriter, r *http.Request) {
 // @Success      200  {object}  RequestResponse
 // @Failure      400  {object}  map[string]string
 // @Failure      500  {object}  map[string]string
-// @Router       /request/{id} [get]
+// @Router       /requests/{id} [get]
 func (s *Server) requestByID(w http.ResponseWriter, r *http.Request) {
 	idStr := r.PathValue("id")
 
