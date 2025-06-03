@@ -229,7 +229,7 @@ func (s *Server) login(w http.ResponseWriter, r *http.Request) {
 // @Summary      Авторизация пользователя
 // @Description  Сбрасывает токен обновления в cookie
 // @Tags         auth
-// @Success      200
+// @Success      200     {object}  SuccessResponse
 // @Router       /auth/logout [delete]
 func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
 	http.SetCookie(w, &http.Cookie{
@@ -242,7 +242,7 @@ func (s *Server) logout(w http.ResponseWriter, r *http.Request) {
 		MaxAge:   -1,
 	})
 
-	if err := s.writeJSON(w, http.StatusOK, nil, nil); err != nil {
+	if err := s.writeJSON(w, http.StatusOK, envelope{"success": "true"}, nil); err != nil {
 		s.serverErrorResponse(w, r, err)
 
 		return
